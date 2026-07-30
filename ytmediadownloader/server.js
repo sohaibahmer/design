@@ -1,7 +1,7 @@
 /* ==========================================================================
-   REAL YOUTUBE STREAMING BACKEND SERVER (PRODUCTION-READY FOR DOCKER/RAILWAY)
+   REAL YOUTUBE STREAMING BACKEND SERVER (ANDROID PLAYER CLIENT BYPASS)
    Project: Project 03 YouTube Media Downloader
-   Tech: Node.js, Express, yt-dlp Direct Pipe with Content-Length
+   Tech: Node.js, Express, yt-dlp Direct Pipe with Android Signature Bypass
    ========================================================================== */
 
 const express = require('express');
@@ -24,21 +24,23 @@ app.use(express.static(__dirname));
 
 // Health check endpoint for Railway / cloud orchestrators
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', time: new Date() });
+  res.json({ status: 'ok', engine: 'yt-dlp-android-bypass', time: new Date() });
 });
 
 app.get('/', (req, res) => {
   res.send('YouTube Downloader Backend API Online');
 });
 
-// 1. EXTRACT ALL REAL YOUTUBE FORMATS VIA YT-DLP
+// 1. EXTRACT ALL REAL YOUTUBE FORMATS VIA YT-DLP (ANDROID CLIENT BYPASS)
 app.get('/api/info', (req, res) => {
   const videoUrl = req.query.url;
   if (!videoUrl) {
     return res.status(400).json({ error: 'Missing video URL' });
   }
 
-  const cmd = `"${YTDLP_BIN}" --dump-json "${videoUrl}"`;
+  console.log(`[Backend Info] Parsing formats for: ${videoUrl}`);
+
+  const cmd = `"${YTDLP_BIN}" --extractor-args "youtube:player_client=android,web" --dump-json "${videoUrl}"`;
   exec(cmd, { maxBuffer: 15 * 1024 * 1024 }, (error, stdout, stderr) => {
     if (error || !stdout) {
       console.error('yt-dlp info error:', error || stderr);
@@ -53,7 +55,7 @@ app.get('/api/info', (req, res) => {
       const audioFormatsMap = new Map();
 
       formats.forEach(f => {
-        // Video formats
+        // Video formats with progressive MP4 or stream bounds
         if (f.vcodec && f.vcodec !== 'none' && f.height) {
           if (!videoFormatsMap.has(f.height)) {
             videoFormatsMap.set(f.height, {
@@ -130,14 +132,16 @@ app.get('/api/download', (req, res) => {
   res.setHeader('Content-Disposition', `attachment; filename="${cleanName}"`);
   res.setHeader('Content-Type', type === 'audio' ? 'audio/mpeg' : 'video/mp4');
 
+  // Progressive single file format selector or best audio/video combo
   const formatArg = (type === 'audio')
     ? (formatId && formatId !== 'undefined' ? `${formatId}/ba/bestaudio` : 'ba/bestaudio')
-    : (formatId && formatId !== 'undefined' ? `${formatId}/b/best` : 'b/best');
+    : (formatId && formatId !== 'undefined' ? `${formatId}/b/best[ext=mp4]/best` : 'b/best[ext=mp4]/best');
 
   console.log(`Direct chunked stream download: format ${formatArg} for ${videoUrl}`);
 
-  // Spawn yt-dlp to stream stdout chunks directly to client HTTP response!
+  // Spawn yt-dlp with android player client bypass to stream raw binary MP4 file
   const ytProcess = spawn(YTDLP_BIN, [
+    '--extractor-args', 'youtube:player_client=android,web',
     '-f', formatArg,
     '--no-playlist',
     '-o', '-',
