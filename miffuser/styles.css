@@ -675,26 +675,45 @@ body {
 }
 
 @media (max-width: 840px) {
-  .page-container { padding: 90px 16px 40px; }
-  .floating-header-nav { left: 12px; right: 12px; top: 12px; padding: 10px 14px; }
-  .hero-section { padding: 40px 0 30px; }
-  .main-title { font-size: 30px; letter-spacing: -0.02em; line-height: 1.2; }
-  .hero-tagline { font-size: 15px; }
+  .floating-header-nav {
+    position: fixed !important;
+    top: 10px !important;
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    max-width: calc(100vw - 20px) !important;
+    transform: none !important;
+    padding: 8px 12px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+  }
+  .page-container {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 80px 16px 40px !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+  .hero-section { padding: 30px 0 20px; }
+  .main-title { font-size: 26px; letter-spacing: -0.02em; line-height: 1.25; }
+  .hero-tagline { font-size: 14.5px; }
 
-  .metrics-grid, .color-tokens-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .features-grid-2col, .grid-2col-list, .principles-dual-row, .decisions-grid { grid-template-columns: 1fr; gap: 16px; }
-  .about-action-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .metrics-grid, .color-tokens-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .features-grid-2col, .grid-2col-list, .principles-dual-row, .decisions-grid { grid-template-columns: 1fr; gap: 14px; }
+  .about-action-row { flex-direction: column; align-items: flex-start; gap: 10px; }
 
-  .mobile-preview-container { padding: 16px 12px; }
+  .mobile-preview-container { padding: 14px 10px; }
   .phone-screen-container { width: 100%; display: flex; justify-content: center; }
-  .phone-frame { width: 320px; height: 620px; max-width: 100%; }
+  .phone-frame { width: 300px; height: 580px; max-width: 100%; }
 
-  .chapter-card { padding: 20px 16px; }
-  .chapter-title { font-size: 20px; }
+  .chapter-card { padding: 18px 14px; }
+  .chapter-title { font-size: 19px; }
+  .header-live-app-btn { font-size: 11px; padding: 5px 10px; }
 }
 
 @media (max-width: 480px) {
   .metrics-grid, .color-tokens-grid { grid-template-columns: 1fr; }
-  .main-title { font-size: 26px; }
-  .phone-frame { width: 100%; height: 560px; }
+  .main-title { font-size: 22px; }
+  .phone-frame { width: 100%; height: 520px; }
+  .header-exit-btn span:first-child { display: none; }
 }
