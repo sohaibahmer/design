@@ -1,0 +1,41 @@
+{
+  "name": "drm-video-pipeline",
+  "version": "1.0.0",
+  "description": "End-to-end HLS video transcoding, Shaka CENC encryption, DRM license server, and edge CDN simulation",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/index.ts",
+    "transcode": "ts-node src/scripts/test-pipeline.ts",
+    "server": "ts-node src/drm-server/server.ts"
+  },
+  "keywords": [
+    "ffmpeg",
+    "hls",
+    "hevc",
+    "drm",
+    "widevine",
+    "fairplay",
+    "clearkey",
+    "shaka-packager",
+    "cloud-run"
+  ],
+  "author": "Antigravity Engineer",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.2.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/multer": "^2.2.0",
+    "@types/node": "^22.10.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}

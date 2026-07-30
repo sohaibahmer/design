@@ -1,0 +1,8 @@
+node_modules/
+dist/
+public/streams/*.m4s
+public/streams/*.ts
+public/sample_vertical.mp4
+.DS_Store
+.env
+*.log

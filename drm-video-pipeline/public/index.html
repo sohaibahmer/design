@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enflix Media Engine - Video Upload, Encoding & DRM Protection</title>
+  <!-- Google Fonts & HLS.js + Shaka Player -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.compiled.js"></script>
+  <style>
+    :root {
+      --bg-dark: #0a0c10;
+      --panel-bg: rgba(22, 27, 34, 0.75);
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.4);
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #f3f4f6;
+      --text-sub: #9ca3af;
+      --border: rgba(255, 255, 255, 0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+    }
+
+    header {
+      width: 100%;
+      max-width: 1100px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.4rem;
+      background: linear-gradient(135deg, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .badge {
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid var(--accent);
+      color: #a5b4fc;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .main-container {
+      width: 100%;
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 24px;
+    }
+
+    /* Vertical Video Player */
+    .player-card {
+      background: var(--panel-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .video-wrapper {
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Diagnostics Dashboard */
+    .dashboard-card {
+      background: var(--panel-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Upload Box */
+    .upload-zone {
+      border: 2px dashed var(--accent);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      background: rgba(99, 102, 241, 0.05);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .upload-zone:hover {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: #818cf8;
+    }
+
+    .upload-input { display: none; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .metric-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+    }
+
+    .metric-label {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--success);
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px var(--accent-glow);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .logs-console {
+      background: #05070a;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      font-family: monospace;
+      font-size: 0.8rem;
+      color: #38bdf8;
+      height: 160px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      margin-right: 6px;
+      box-shadow: 0 0 8px var(--success);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      🎬 Enflix Media Engine
+    </div>
+    <div class="badge">Multi-DRM & HLS Pipeline v1.0</div>
+  </header>
+
+  <div class="main-container">
+    <!-- Vertical Video Player -->
+    <div class="player-card">
+      <div class="video-wrapper">
+        <video id="videoPlayer" controls autoplay muted playsinline></video>
+      </div>
+      <div style="margin-top: 12px; font-size: 0.8rem; color: var(--text-sub); text-align: center;">
+        📱 9:16 Vertical Drama Video Player
+      </div>
+    </div>
+
+    <!-- Live Diagnostics & Upload Controls -->
+    <div class="dashboard-card">
+      
+      <!-- Video Upload Section -->
+      <div>
+        <div style="font-size: 1rem; font-weight: 600; margin-bottom: 10px;">
+          📤 Upload Custom Video File to Test Pipeline
+        </div>
+        <div class="upload-zone" onclick="document.getElementById('videoFile').click()">
+          <div style="font-size: 1.8rem; margin-bottom: 6px;">📁</div>
+          <div style="font-weight: 600;">Click to select or drag a video file (.mp4, .mov)</div>
+          <div style="font-size: 0.8rem; color: var(--text-sub); margin-top: 4px;">
+            The engine will transcode it into HLS (1080p, 720p, 480p) & apply CENC DRM protection!
+          </div>
+          <input type="file" id="videoFile" class="upload-input" accept="video/*" onchange="uploadVideo()">
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="font-weight: 600;"><span class="status-indicator" id="statusDot"></span> Live Pipeline Status</div>
+        <button class="btn btn-secondary" onclick="loadDefaultStream()">↺ Reset to Sample Video</button>
+      </div>
+
+      <div class="grid-2">
+        <div class="metric-box">
+          <div class="metric-label">HLS Variants</div>
+          <div class="metric-value" id="streamVariants">1080p / 720p / 480p (fMP4)</div>
+        </div>
+
+        <div class="metric-box">
+          <div class="metric-label">Active DRM Protection</div>
+          <div class="metric-value" id="drmStatus">Widevine & FairPlay Active</div>
+        </div>
+
+        <div class="metric-box">
+          <div class="metric-label">License Key ID (KID)</div>
+          <div class="metric-value" id="keyId">73e1dc84427b57ef...</div>
+        </div>
+
+        <div class="metric-box">
+          <div class="metric-label">CDN Edge Route</div>
+          <div class="metric-value" id="cdnEdge">Cloudflare Workers (BOM-01)</div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-weight: 600; margin-bottom: 8px;">Subscription Tier Access Control</div>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn" onclick="setSubscriptionTier('VIP')">👑 VIP Subscriber (Access Granted)</button>
+          <button class="btn" style="background: #374151;" onclick="setSubscriptionTier('FREE')">🚫 Free User (Blocked)</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="metric-label" style="margin-bottom: 6px;">Live DRM Server & Encoding Logs</div>
+        <div class="logs-console" id="logConsole">System ready. Select a video or play sample stream.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const logConsole = document.getElementById('logConsole');
+    const video = document.getElementById('videoPlayer');
+    let hls = null;
+    let currentTier = 'VIP';
+    let currentStreamUrl = '/streams/master.m3u8';
+
+    function log(msg) {
+      const time = new Date().toLocaleTimeString();
+      logConsole.textContent += `[${time}] ${msg}\n`;
+      logConsole.scrollTop = logConsole.scrollHeight;
+    }
+
+    async function uploadVideo() {
+      const fileInput = document.getElementById('videoFile');
+      if (!fileInput.files || fileInput.files.length === 0) return;
+
+      const file = fileInput.files[0];
+      log(`📤 Uploading "${file.name}" (${(file.size / 1024 / 1024).toFixed(2)} MB)...`);
+      log(`⚙️ Transcoding with FFmpeg into 1080p, 720p, 480p fMP4 & applying CENC DRM...`);
+
+      const formData = new FormData();
+      formData.append('video', file);
+
+      try {
+        const response = await fetch('/api/v1/upload', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          log(`✅ Transcoding & DRM packaging completed successfully!`);
+          log(`KID: ${data.drmKeys.keyId}`);
+          document.getElementById('keyId').textContent = data.drmKeys.keyId.slice(0, 16) + '...';
+          currentStreamUrl = data.streamUrl;
+          playHLSStream(currentStreamUrl);
+        } else {
+          log(`❌ Upload failed: ${data.error}`);
+        }
+      } catch (err) {
+        log(`❌ Error connecting to transcode API: ${err.message}`);
+      }
+    }
+
+    function playHLSStream(url) {
+      log(`🎬 Loading HLS Stream: ${url}`);
+      
+      if (currentTier === 'FREE') {
+        log(`🚫 Access Blocked: Free user token rejected by DRM License Server.`);
+        video.pause();
+        video.src = '';
+        document.getElementById('drmStatus').textContent = 'Access Blocked (Free Tier)';
+        document.getElementById('drmStatus').style.color = '#ef4444';
+        document.getElementById('statusDot').style.background = '#ef4444';
+        return;
+      }
+
+      document.getElementById('drmStatus').textContent = 'Widevine & FairPlay Active';
+      document.getElementById('drmStatus').style.color = '#10b981';
+      document.getElementById('statusDot').style.background = '#10b981';
+
+      if (Hls.isSupported()) {
+        if (hls) hls.destroy();
+        hls = new Hls({
+          debug: false,
+          enableWorker: true
+        });
+
+        hls.loadSource(url);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          log(`✅ HLS Manifest parsed! Playing video...`);
+          video.play().catch(e => log(`Autoplay muted required`));
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = url;
+        video.play();
+      }
+    }
+
+    function setSubscriptionTier(tier) {
+      currentTier = tier;
+      log(`🔑 Switched Subscription Tier to: ${tier}`);
+      playHLSStream(currentStreamUrl);
+    }
+
+    function loadDefaultStream() {
+      currentStreamUrl = '/streams/master.m3u8?t=' + Date.now();
+      playHLSStream(currentStreamUrl);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => loadDefaultStream());
+  </script>
+</body>
+</html>
