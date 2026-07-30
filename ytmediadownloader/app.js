@@ -73,33 +73,6 @@ function initYouTubeDownloaderEngine() {
     urlInput.focus();
   });
 
-  btnPaste.addEventListener('click', async () => {
-    urlInput.focus();
-    try {
-      if (navigator.clipboard && typeof navigator.clipboard.readText === 'function') {
-        const text = await navigator.clipboard.readText();
-        if (text && text.trim()) {
-          urlInput.value = text.trim();
-          btnClear.classList.add('active');
-          parseYouTubeLink();
-          return;
-        }
-      }
-    } catch (err) {
-      console.warn('Clipboard read permission:', err);
-    }
-
-    urlInput.select();
-    try {
-      document.execCommand('paste');
-    } catch (e) {}
-
-    if (urlInput.value.trim()) {
-      btnClear.classList.add('active');
-      parseYouTubeLink();
-    }
-  });
-
   btnParse.addEventListener('click', parseYouTubeLink);
 
   urlInput.addEventListener('keydown', (e) => {

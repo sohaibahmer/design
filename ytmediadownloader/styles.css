@@ -232,37 +232,12 @@ body {
 }
 
 /* CLEAR BUTTON */
+/* CLEAR BUTTON */
 .btn-clear {
   display: none;
   align-items: center;
-  justify-content: center;
-  padding: 8px 14px;
-  background: rgba(239, 68, 68, 0.12);
-  border: 1px solid rgba(239, 68, 68, 0.25);
-  border-radius: var(--radius-pill);
-  color: #FCA5A5;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.btn-clear.active {
-  display: inline-flex;
-}
-
-.btn-clear:hover {
-  background: rgba(239, 68, 68, 0.25);
-  color: #FFFFFF;
-}
-
-/* PASTE BUTTON */
-.btn-paste {
-  display: inline-flex;
-  align-items: center;
   gap: 6px;
-  padding: 10px 18px;
+  padding: 8px 16px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-pill);
@@ -274,9 +249,14 @@ body {
   white-space: nowrap;
 }
 
-.btn-paste:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--text-primary);
+.btn-clear.active {
+  display: inline-flex;
+}
+
+.btn-clear:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #FCA5A5;
 }
 
 /* "GO" ACTION BUTTON */
