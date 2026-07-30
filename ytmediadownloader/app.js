@@ -74,37 +74,29 @@ function initYouTubeDownloaderEngine() {
 
   btnPaste.addEventListener('click', async () => {
     urlInput.focus();
-    let pastedText = '';
-
     try {
       if (navigator.clipboard && typeof navigator.clipboard.readText === 'function') {
-        pastedText = await navigator.clipboard.readText();
-      }
-    } catch (err) {
-      console.warn('Clipboard API read error or permission denied:', err);
-    }
-
-    if (pastedText && pastedText.trim()) {
-      urlInput.value = pastedText.trim();
-      btnClear.classList.add('active');
-      parseYouTubeLink();
-    } else {
-      urlInput.select();
-      try {
-        const success = document.execCommand('paste');
-        if (success && urlInput.value.trim()) {
+        const text = await navigator.clipboard.readText();
+        if (text && text.trim()) {
+          urlInput.value = text.trim();
           btnClear.classList.add('active');
           parseYouTubeLink();
           return;
         }
-      } catch (e) {}
-
-      const fallbackUrl = prompt('Paste your YouTube link here:', urlInput.value || '');
-      if (fallbackUrl && fallbackUrl.trim()) {
-        urlInput.value = fallbackUrl.trim();
-        btnClear.classList.add('active');
-        parseYouTubeLink();
       }
+    } catch (err) {
+      console.warn('Clipboard read permission:', err);
+    }
+
+    // Direct paste attempt without any alert or prompt popups
+    urlInput.select();
+    try {
+      document.execCommand('paste');
+    } catch (e) {}
+
+    if (urlInput.value.trim()) {
+      btnClear.classList.add('active');
+      parseYouTubeLink();
     }
   });
 
