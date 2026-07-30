@@ -1,4 +1,7 @@
 # Railway Nixpacks Configuration for YouTube Downloader Backend
+[variables]
+PORT = "4000"
+
 [phases.setup]
 nixPkgs = ['nodejs_20', 'python311', 'yt-dlp', 'ffmpeg']
 
