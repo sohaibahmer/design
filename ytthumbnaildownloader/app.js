@@ -119,16 +119,30 @@ function initThumbnailDownloader() {
   const qualityTag = document.getElementById('res-quality-tag');
   const formatsContainer = document.getElementById('formats-list-container');
   const thumbnailCount = document.getElementById('thumbnail-count');
+  const btnPreview = document.getElementById('btn-preview-now');
+  const previewLabel = document.getElementById('preview-btn-label');
   const btnDownload = document.getElementById('btn-download-now');
   const downloadLabel = document.getElementById('download-btn-label');
   const progressBox = document.getElementById('download-progress-box');
   const progressFill = document.getElementById('progress-fill-bar');
   const progressStatus = document.getElementById('progress-status-msg');
   const progressSpeed = document.getElementById('progress-speed-msg');
+  const previewModal = document.getElementById('thumbnail-preview-modal');
+  const previewModalImage = document.getElementById('preview-modal-image');
+  const previewModalMeta = document.getElementById('preview-modal-meta');
+  const btnClosePreview = document.getElementById('btn-close-preview');
 
   let selectedThumbnail = null;
   let currentVideoId = null;
   let currentTitle = 'YouTube_Thumbnail';
+
+  function syncInputState() {
+    btnClear.classList.toggle('active', urlInput.value.trim().length > 0);
+  }
+
+  syncInputState();
+  window.addEventListener('pageshow', syncInputState);
+  setTimeout(syncInputState, 0);
 
   function resetResults() {
     resultCard.classList.remove('active');
@@ -257,8 +271,21 @@ function initThumbnailDownloader() {
 
   function updateDownloadLabel() {
     if (!selectedThumbnail) return;
+    previewLabel.textContent = `Preview ${selectedThumbnail.actualWidth}×${selectedThumbnail.actualHeight}`;
     downloadLabel.textContent = `Download ${selectedThumbnail.actualWidth}×${selectedThumbnail.actualHeight} ${selectedThumbnail.extension.toUpperCase()}`;
   }
+
+  btnPreview.addEventListener('click', () => {
+    if (!selectedThumbnail) return;
+    previewModalImage.src = selectedThumbnail.url;
+    previewModalMeta.textContent = `${selectedThumbnail.actualWidth}×${selectedThumbnail.actualHeight} • ${selectedThumbnail.extension.toUpperCase()}`;
+    previewModal.showModal();
+  });
+
+  btnClosePreview.addEventListener('click', () => previewModal.close());
+  previewModal.addEventListener('click', event => {
+    if (event.target === previewModal) previewModal.close();
+  });
 
   btnDownload.addEventListener('click', async () => {
     if (!selectedThumbnail || !currentVideoId) return;

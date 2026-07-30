@@ -1,6 +1,6 @@
 /* ==========================================================================
    REAL YOUTUBE STREAMING BACKEND SERVER (PRODUCTION ROOT SERVER)
-   Project: Project 03 YouTube Media Downloader & Full Portfolio Backend
+   Project: Project 03 YouTube Thumbnail Downloader & Full Portfolio Backend
    Tech: Node.js, Express, yt-dlp Direct Pipe with Progressive H.264 MP4 Engine
    ========================================================================== */
 
@@ -45,7 +45,7 @@ app.use(express.json());
 
 // Serve static portfolio files
 app.use(express.static(__dirname));
-app.use('/ytmediadownloader', express.static(path.join(__dirname, 'ytmediadownloader')));
+app.use('/ytthumbnaildownloader', express.static(path.join(__dirname, 'ytthumbnaildownloader')));
 
 // Health check endpoint for Railway / cloud orchestrators
 app.get('/health', (req, res) => {
@@ -212,7 +212,7 @@ app.get('/api/download', (req, res) => {
   ytProcess.on('error', (error) => {
     console.error('yt-dlp stream error:', error);
     removeDirectory(tempDirectory);
-    if (!res.headersSent) res.status(500).send('Unable to start the media downloader');
+    if (!res.headersSent) res.status(500).send('Unable to start the legacy media service');
   });
 
   ytProcess.on('close', (code) => {

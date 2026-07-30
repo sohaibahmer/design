@@ -8,7 +8,7 @@
   "keywords": [],
   "author": "Sohaib Ahmer",
   "license": "ISC",
-  "description": "Portfolio & YouTube Media Downloader Backend Engine",
+  "description": "Portfolio and YouTube Thumbnail Downloader",
   "dependencies": {
     "@distube/ytdl-core": "^4.16.12",
     "axios": "^1.19.0",

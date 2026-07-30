@@ -1,6 +1,6 @@
 /* ==========================================================================
    REAL YOUTUBE STREAMING BACKEND SERVER (IOS/WEB EMBEDDED PLAYER BYPASS)
-   Project: Project 03 YouTube Media Downloader
+   Project: Project 03 YouTube Thumbnail Downloader (Legacy Backend)
    Tech: Node.js, Express, yt-dlp Direct Pipe with Progressive H.264 MP4 Engine
    ========================================================================== */
 
@@ -208,7 +208,7 @@ app.get('/api/download', (req, res) => {
   ytProcess.on('error', (error) => {
     console.error('yt-dlp stream error:', error);
     removeDirectory(tempDirectory);
-    if (!res.headersSent) res.status(500).send('Unable to start the media downloader');
+    if (!res.headersSent) res.status(500).send('Unable to start the legacy media service');
   });
 
   ytProcess.on('close', (code) => {

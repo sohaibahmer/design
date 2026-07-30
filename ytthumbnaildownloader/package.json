@@ -1,5 +1,5 @@
 {
-  "name": "youtube-downloader-backend",
+  "name": "youtube-thumbnail-downloader",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
@@ -8,7 +8,7 @@
   "keywords": [],
   "author": "Sohaib Ahmer",
   "license": "ISC",
-  "description": "YouTube Stream Downloader Backend Server",
+  "description": "YouTube Thumbnail Downloader portfolio project",
   "dependencies": {
     "@distube/ytdl-core": "^4.16.12",
     "axios": "^1.19.0",
