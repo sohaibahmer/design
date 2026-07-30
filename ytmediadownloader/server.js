@@ -1,5 +1,5 @@
 /* ==========================================================================
-   REAL YOUTUBE STREAMING BACKEND SERVER (PRODUCTION-READY FOR RENDER/RAILWAY)
+   REAL YOUTUBE STREAMING BACKEND SERVER (PRODUCTION-READY FOR DOCKER/RAILWAY)
    Project: Project 03 YouTube Media Downloader
    Tech: Node.js, Express, yt-dlp Direct Pipe with Content-Length
    ========================================================================== */
@@ -11,10 +11,12 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 4000;
 
-// Resolve yt-dlp binary path dynamically
-const YTDLP_BIN = fs.existsSync('/opt/homebrew/bin/yt-dlp') ? '/opt/homebrew/bin/yt-dlp' : 'yt-dlp';
+// Resolve yt-dlp binary path dynamically for Linux Docker container & macOS
+const YTDLP_BIN = fs.existsSync('/usr/local/bin/yt-dlp') 
+  ? '/usr/local/bin/yt-dlp' 
+  : (fs.existsSync('/opt/homebrew/bin/yt-dlp') ? '/opt/homebrew/bin/yt-dlp' : 'yt-dlp');
 
 app.use(cors());
 app.use(express.json());
