@@ -99,13 +99,25 @@ p, .hero-sub, .section-subtitle, .project-desc {
    1. FLOATING HEADER
    ========================================================================== */
 .floating-header-nav {
-  position: fixed;
-  top: 24px; left: 36px; right: 36px;
-  z-index: 100;
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 14px 36px;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  pointer-events: none;
+  background: rgba(15, 21, 35, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  pointer-events: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+:root[data-theme="light"] .floating-header-nav {
+  background: rgba(255, 255, 255, 0.85);
 }
 
 .brand-stamp {
@@ -775,9 +787,10 @@ section[id] { scroll-margin-top: 110px; }
     padding: 100px 16px 60px;
   }
   .floating-header-nav {
-    left: 12px; right: 12px; top: 12px;
-    padding: 10px 14px;
+    top: 0; left: 0; right: 0; width: 100%;
+    padding: 10px 16px;
     gap: 8px;
+    border-radius: 0;
   }
   .ticket-nav-container { display: none; }
   .brand-stamp-text { font-size: 13px; }
