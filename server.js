@@ -69,6 +69,8 @@ app.get('/api/info', (req, res) => {
   console.log(`[Backend Info] Parsing formats for: ${videoUrl}`);
 
   execFile(YTDLP_BIN, [
+    '--no-js-runtimes',
+    '--js-runtimes', 'node',
     '--extractor-args', 'youtube:player_client=ios,web_embedded',
     '--no-playlist',
     '--dump-single-json',
@@ -185,6 +187,8 @@ app.get('/api/download', (req, res) => {
   console.log(`Preparing ${type} download: format ${formatArg} for ${videoUrl}`);
 
   const args = [
+    '--no-js-runtimes',
+    '--js-runtimes', 'node',
     '--extractor-args', 'youtube:player_client=ios,web_embedded',
     '-f', formatArg,
     '--no-playlist',
