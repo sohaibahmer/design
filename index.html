@@ -2,10 +2,335 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=main_portfolio/index.html">
-  <title>Sohaib Ahmer &bull; Visual UI & Product Design Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sohaib Design Portfolio</title>
+  <link rel="stylesheet" href="main_portfolio/styles.css">
 </head>
 <body>
-  <script>window.location.href = "main_portfolio/index.html";</script>
+
+  <!-- 1. INTERACTIVE ZIPPER CURTAIN UNVEILING OVERLAY (FIRST VISIT ONLY) -->
+  <div id="zipper-curtain-overlay">
+    <!-- Left Curtain Panel -->
+    <div class="curtain-panel" id="curtain-left"></div>
+
+    <!-- Zipper Seam & Teeth Track -->
+    <div class="zipper-seam-container">
+      <div class="zipper-teeth-track"></div>
+    </div>
+
+    <!-- Draggable/Clickable Zipper Handle -->
+    <div class="zipper-handle-wrapper" id="zipper-handle">
+      <div class="zipper-pull-head"></div>
+      <div class="zipper-pull-tab">
+        <div class="zipper-pull-hole"></div>
+      </div>
+      <div class="zipper-hint-label">👇 Pull Down to Unveil Portfolio</div>
+    </div>
+
+    <!-- Right Curtain Panel -->
+    <div class="curtain-panel" id="curtain-right"></div>
+  </div>
+
+  <!-- 2. SCROLLBAR WOOLLEN YARN TRACK & UNRAVELING THREAD -->
+  <div id="woollen-yarn-scrollbar-container">
+    <svg id="unraveling-yarn-svg">
+      <path id="unraveling-thread-line" class="yarn-thread-path" d="M22 0 L22 100" />
+    </svg>
+
+    <!-- Woollen Yarn Ball Traveling along Scrollbar -->
+    <div id="woollen-yarn-scrollbar-ball">
+      <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+        <circle cx="19" cy="19" r="16" fill="var(--bg-surface)" stroke="var(--accent-brand)" stroke-width="2.5" />
+        <path class="yarn-thread-path" d="M8 15 C14 10 24 10 29 17" />
+        <path class="yarn-thread-path" d="M9 22 C16 28 26 26 30 20" />
+        <path class="yarn-thread-path" d="M16 6 C21 14 19 25 14 31" />
+      </svg>
+    </div>
+  </div>
+
+  <!-- 3. SUBTLE SMALL HAND-DRAWN LINE-ART CAT WITH DYNAMIC YARN-TRACKING RISE & HAND-REACH -->
+  <div id="peeking-character-runner" class="cat-character" title="Hand-Drawn Cat. Scroll down to see her get up and reach her paw toward the yarn ball!">
+    <svg width="160" height="140" viewBox="0 0 160 140" fill="none">
+      
+      <!-- DYNAMIC HAND-DRAWN HEAD & BODY ASSEMBLY -->
+      <g id="hand-drawn-head-group">
+        <!-- Hand-Drawn Ears -->
+        <path class="hand-drawn-stroke" d="M42 62 C34 40 28 28 22 20 C36 32 48 46 54 54 Z" />
+        <path class="hand-drawn-stroke" d="M118 62 C126 40 132 28 138 20 C124 32 112 46 106 54 Z" />
+
+        <!-- Sketchy Inner Ear Flaps -->
+        <path class="hand-drawn-accent" d="M30 32 C36 42 42 50 46 56" />
+        <path class="hand-drawn-accent" d="M130 32 C124 42 118 50 114 56" />
+
+        <!-- Hand-Drawn Head Contour -->
+        <path class="hand-drawn-stroke" d="M30 78 C24 50 136 50 130 78 C126 95 34 95 30 78 Z" />
+
+        <!-- Big Expressive Hand-Drawn Eyes with Dynamic Pupil Tracking -->
+        <g id="hand-drawn-eyes">
+          <ellipse cx="58" cy="70" rx="8" ry="11" class="hand-drawn-stroke" fill="var(--bg-canvas)" />
+          <ellipse id="left-pupil" cx="59" cy="70" rx="4.5" ry="7.5" fill="var(--text-primary)" style="transition: transform 0.08s ease-out;" />
+          <circle id="left-shine" cx="57" cy="67" r="2.2" fill="#FFFFFF" style="transition: transform 0.08s ease-out;" />
+
+          <ellipse cx="102" cy="70" rx="8" ry="11" class="hand-drawn-stroke" fill="var(--bg-canvas)" />
+          <ellipse id="right-pupil" cx="101" cy="70" rx="4.5" ry="7.5" fill="var(--text-primary)" style="transition: transform 0.08s ease-out;" />
+          <circle id="right-shine" cx="99" cy="67" r="2.2" fill="#FFFFFF" style="transition: transform 0.08s ease-out;" />
+        </g>
+
+        <!-- Pink Nose & Whiskers -->
+        <path d="M76 77 Q80 73 84 77 Q80 82 76 77 Z" fill="var(--accent-brand)" stroke="var(--text-primary)" stroke-width="1.5" />
+        <path d="M80 81 Q75 88 68 85 M80 81 Q85 88 92 85" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" fill="none" />
+
+        <line x1="44" y1="74" x2="16" y2="70" stroke="var(--text-primary)" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="44" y1="79" x2="16" y2="81" stroke="var(--text-primary)" stroke-width="1.8" stroke-linecap="round"/>
+
+        <line x1="116" y1="74" x2="144" y2="70" stroke="var(--text-primary)" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="116" y1="79" x2="144" y2="81" stroke="var(--text-primary)" stroke-width="1.8" stroke-linecap="round"/>
+
+        <!-- Torso Body Outline (Unveils as she rises!) -->
+        <path class="hand-drawn-stroke" d="M42 92 C42 135 118 135 118 92 Z" />
+      </g>
+
+      <!-- RESTING LEFT PAW ON BORDER EDGE -->
+      <path class="hand-drawn-stroke" d="M38 108 C38 94 56 94 56 108 Z" />
+
+      <!-- DYNAMIC RAISED RIGHT HAND / PAW REACHING UP FOR YARN -->
+      <g id="hand-drawn-raised-paw" style="transition: transform 0.1s ease-out; transform-origin: 110px 90px;">
+        <path class="hand-drawn-stroke" d="M104 108 C104 70 128 50 134 68 C136 82 122 108 104 108 Z" />
+        <!-- Hand / Paw Claws / Beans -->
+        <path class="hand-drawn-stroke" d="M122 55 C124 46 130 46 132 55" stroke-width="2" />
+        <circle cx="127" cy="62" r="3" fill="var(--accent-brand)" opacity="0.8" />
+      </g>
+
+      <!-- Speech Bubble for Cat Reaction -->
+      <foreignObject x="0" y="0" width="160" height="40">
+        <div id="cat-speech-bubble" class="cat-speech-bubble">Gotcha! 🐾</div>
+      </foreignObject>
+
+    </svg>
+  </div>
+
+  <!-- 4. FLOATING HEADER & TICKET NAV WITH "PROJECT WORKS" LINK -->
+  <header class="floating-header-nav">
+    <a href="#" class="brand-stamp">
+      <div class="brand-stamp-icon">SA</div>
+      <div class="brand-stamp-text">Sohaib Ahmer</div>
+    </a>
+
+    <nav class="ticket-nav-container">
+      <!-- Updated label to "Project Works" -->
+      <a href="#projects" class="ticket-nav-link active">Project Works</a>
+      <a href="#discipline" class="ticket-nav-link">Discipline</a>
+      <a href="#contact" class="ticket-nav-link">Contact</a>
+    </nav>
+
+    <div class="arcade-hud-controls">
+      <button id="btn-toggle-theme" class="btn-minimal-secondary" style="display:flex; align-items:center; gap:6px;">
+        <span id="theme-icon">☀️</span> <span id="theme-label">Light Mode</span>
+      </button>
+
+      <a href="mailto:sohaib@duck.com" class="btn-minimal-primary">Get in Touch</a>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER FRAME -->
+  <main class="page-container">
+
+    <!-- HERO EDITORIAL INTRO SECTION -->
+    <section class="hero-editorial">
+      <div class="hero-pill-badge">
+        🎨 Visual Communication & Digital Products
+      </div>
+
+      <h1 class="hero-headline">
+        Designing Systems & Digital Products that Move <span class="hero-gradient-text">Revenue & Emotion</span>
+      </h1>
+
+      <p class="hero-sub">
+        Specialising in enterprise software ergonomics, design token systems, and expressive web experiences.
+      </p>
+
+      <div style="display:flex; gap:16px; justify-content:center;">
+        <a href="#projects" class="btn-minimal-primary" style="padding:14px 28px; font-size:14px;">
+          <span>Explore Project Works</span>
+          <span>↓</span>
+        </a>
+        <a href="https://www.linkedin.com/in/sohaibahmer/" target="_blank" rel="noopener noreferrer" class="btn-minimal-secondary" style="padding:14px 28px; font-size:14px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.78a1.64 1.64 0 1 0 0 3.28 1.64 1.64 0 0 0 0-3.28Z"/></svg>
+          <span>LinkedIn Profile</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- PROJECT WORKS GRID SECTION (PROJECT 01, PROJECT 02, PROJECT 03) -->
+    <section id="projects" style="padding:40px 0 60px;">
+      <div class="section-header-block">
+        <span class="section-tag">PROJECT WORKS INDEX</span>
+        <h2 class="section-title">Case Studies & Web Applications</h2>
+        <p class="section-subtitle">
+          Explore recent projects spanning enterprise software systems, brand storytelling, and media utility applications.
+        </p>
+      </div>
+
+      <div class="project-grid">
+        
+        <!-- PROJECT 01 CARD -->
+        <div class="project-card">
+          <div class="project-card-body">
+            <div class="project-tag">PROJECT 01 &bull; SAAS PRODUCT UI</div>
+            <h3 class="project-title">Oliv.AI Enterprise SaaS System</h3>
+            <p class="project-desc">
+              Enterprise revenue intelligence platform designed to automate MEDDICC deal scorecards, transcript citations, and buyer risks.
+            </p>
+
+            <div class="project-highlights-list">
+              <span class="project-chip">Automated MEDDICC</span>
+              <span class="project-chip">AI Risk Radar</span>
+              <span class="project-chip">Design Tokens</span>
+            </div>
+          </div>
+
+          <a href="visual_ui_portfolio_1/index.html" class="btn-minimal-primary" style="width:100%;">
+            <span>Launch Oliv Saas</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- PROJECT 02 CARD -->
+        <div class="project-card">
+          <div class="project-card-body">
+            <div class="project-tag">PROJECT 02 &bull; BRAND EXPERIENCE</div>
+            <h3 class="project-title">Oliv.AI Brand & Marketing UX</h3>
+            <p class="project-desc">
+              High-conversion marketing landing experience featuring interactive call audio waveform simulator and rep ROI calculator.
+            </p>
+
+            <div class="project-highlights-list">
+              <span class="project-chip">Audio Waveform</span>
+              <span class="project-chip">ROI Calculator</span>
+              <span class="project-chip">Pricing Matrix</span>
+            </div>
+          </div>
+
+          <a href="visual_ui_portfolio_2/index.html" class="btn-minimal-primary" style="width:100%;">
+            <span>Launch Oliv Brand</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- PROJECT 03 CARD: YOUTUBE MEDIA DOWNLOADER -->
+        <div class="project-card">
+          <div class="project-card-body">
+            <div class="project-tag" style="color:var(--accent-brand);">PROJECT 03 &bull; MEDIA UTILITY APP</div>
+            <h3 class="project-title">YouTube Media Downloader</h3>
+            <p class="project-desc">
+              High-speed stream parser app. Paste any YouTube video link to extract 4K MP4 videos or high-bitrate 320kbps MP3 audio files.
+            </p>
+
+            <div class="project-highlights-list">
+              <span class="project-chip">Clipboard Paste Link</span>
+              <span class="project-chip">4K MP4 & 320k MP3</span>
+              <span class="project-chip">Stream Parser</span>
+            </div>
+          </div>
+
+          <a href="visual_ui_portfolio_3/index.html" class="btn-minimal-primary" style="width:100%;">
+            <span>Launch Downloader</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- PROJECT 04 CARD: MIFFUSER PWA & CASE STUDY -->
+        <div class="project-card">
+          <div class="project-card-body">
+            <div class="project-tag" style="color:#F0C040;">PROJECT 04 &bull; PWA & CASE STUDY</div>
+            <h3 class="project-title">miffuser Progressive Web App</h3>
+            <p class="project-desc">
+              Single-file PWA for MIFF 2026. 349 films across 7 days & 7 venues in your pocket. Offline. Installed. No app store.
+            </p>
+
+            <div class="project-highlights-list">
+              <span class="project-chip">Single-File PWA</span>
+              <span class="project-chip">Offline-First</span>
+              <span class="project-chip">Case Study</span>
+            </div>
+          </div>
+
+          <a href="visual_ui_portfolio_4/index.html" class="btn-minimal-primary" style="width:100%;">
+            <span>View Case Study & PWA</span>
+            <span>→</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- DESIGN DISCIPLINE SECTION -->
+    <section id="discipline" style="padding:40px 0 60px;">
+      <div class="about-card">
+        <div class="section-header-block" style="margin-bottom:36px;">
+          <span class="section-tag">DESIGN PHILOSOPHY</span>
+          <h2 class="section-title">Design Discipline & Craft Standards</h2>
+          <p class="section-subtitle">
+            Grounded in rigorous design education at NID and refined for high-growth tech platforms.
+          </p>
+        </div>
+
+        <div class="about-grid">
+          
+          <div class="subcard-pane">
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-brand); font-weight:700; text-transform:uppercase; margin-bottom:8px;">01. SOFTWARE ERGONOMICS</div>
+            <h3 style="font-family:var(--font-heading); font-size:20px; font-weight:700; color:var(--text-primary); margin-bottom:10px;">Data-Dense Systems Clarity</h3>
+            <p style="font-size:14px; color:var(--text-secondary); line-height:1.65;">
+              Transforming complex multi-variable data tables, revenue scorecards, and AI risk signals into clean, scannable product workflows for executive teams.
+            </p>
+          </div>
+
+          <div class="subcard-pane">
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-cobalt); font-weight:700; text-transform:uppercase; margin-bottom:8px;">02. BRAND & CONVERSION</div>
+            <h3 style="font-family:var(--font-heading); font-size:20px; font-weight:700; color:var(--text-primary); margin-bottom:10px;">Expressive Product Storytelling</h3>
+            <p style="font-size:14px; color:var(--text-secondary); line-height:1.65;">
+              Crafting interactive web experiences, micro-animations, and dynamic calculators that turn technical product capabilities into high-conversion narrative journeys.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CLEAN FOOTER CARD WITH DISCLAIMER -->
+    <footer class="footer-glass-card" id="contact">
+      <div class="footer-header-row">
+        <span class="footer-tag">PORTFOLIO NOTICE & DISCLAIMER</span>
+        <span class="footer-domain">design.sohaibahmer.in</span>
+      </div>
+
+      <div class="footer-body-grid">
+        <p class="footer-disclaimer-text">
+          This master portfolio index hub is an independent design presentation created by <strong>Sohaib Ahmer</strong> (Postgraduate Alumnus, National Institute of Design). All project concepts, brand references, logos, and trademarks remain the intellectual property of their respective owners.
+        </p>
+
+        <div class="footer-contact-block">
+          <div class="footer-contact-title">Direct Contact</div>
+          <div class="footer-contact-links">
+            <a href="mailto:sohaib@duck.com" class="footer-link">
+              <span>✉️</span> <span>sohaib@duck.com</span>
+            </a>
+            <a href="https://www.linkedin.com/in/sohaibahmer/" target="_blank" rel="noopener noreferrer" class="footer-link">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.78a1.64 1.64 0 1 0 0 3.28 1.64 1.64 0 0 0 0-3.28Z"/></svg>
+              <span>LinkedIn Profile</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom-row">
+        <span>Visual UI & Product Design Portfolio</span>
+        <span>design.sohaibahmer.in &bull; © 2026 All Rights Reserved</span>
+      </div>
+    </footer>
+
+  </main>
+
+  <script src="main_portfolio/app.js"></script>
 </body>
 </html>
