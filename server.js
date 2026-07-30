@@ -6,9 +6,10 @@
 
 const express = require('express');
 const cors = require('cors');
-const { exec, spawn } = require('child_process');
+const { execFile, spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -17,6 +18,27 @@ const PORT = process.env.PORT || 8080;
 const YTDLP_BIN = fs.existsSync('/usr/local/bin/yt-dlp') 
   ? '/usr/local/bin/yt-dlp' 
   : (fs.existsSync('/opt/homebrew/bin/yt-dlp') ? '/opt/homebrew/bin/yt-dlp' : 'yt-dlp');
+
+const YOUTUBE_HOSTS = new Set([
+  'youtube.com',
+  'www.youtube.com',
+  'm.youtube.com',
+  'music.youtube.com',
+  'youtu.be'
+]);
+
+function isValidYouTubeUrl(value) {
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === 'https:' && YOUTUBE_HOSTS.has(parsed.hostname.toLowerCase());
+  } catch {
+    return false;
+  }
+}
+
+function removeDirectory(directory) {
+  fs.rm(directory, { recursive: true, force: true }, () => {});
+}
 
 app.use(cors());
 app.use(express.json());
@@ -40,11 +62,18 @@ app.get('/api/info', (req, res) => {
   if (!videoUrl) {
     return res.status(400).json({ error: 'Missing video URL' });
   }
+  if (!isValidYouTubeUrl(videoUrl)) {
+    return res.status(400).json({ error: 'Please provide a valid HTTPS YouTube URL' });
+  }
 
   console.log(`[Backend Info] Parsing formats for: ${videoUrl}`);
 
-  const cmd = `"${YTDLP_BIN}" --extractor-args "youtube:player_client=ios,web_embedded" --dump-json "${videoUrl}"`;
-  exec(cmd, { maxBuffer: 15 * 1024 * 1024 }, (error, stdout, stderr) => {
+  execFile(YTDLP_BIN, [
+    '--extractor-args', 'youtube:player_client=ios,web_embedded',
+    '--no-playlist',
+    '--dump-single-json',
+    videoUrl
+  ], { maxBuffer: 20 * 1024 * 1024 }, (error, stdout, stderr) => {
     if (error || !stdout) {
       console.error('yt-dlp info error:', error || stderr);
       return res.status(500).json({ error: 'Failed to parse YouTube video metadata' });
@@ -58,9 +87,15 @@ app.get('/api/info', (req, res) => {
       const audioFormatsMap = new Map();
 
       formats.forEach(f => {
-        // Video formats with progressive MP4 or combined audio+video
-        if (f.vcodec && f.vcodec !== 'none' && f.height) {
-          if (!videoFormatsMap.has(f.height)) {
+        // Prefer H.264 MP4 streams. Video-only streams are merged with M4A on download.
+        const isH264Mp4 = f.ext === 'mp4'
+          && f.vcodec && f.vcodec !== 'none'
+          && /^(avc1|h264)/i.test(f.vcodec);
+        if (isH264Mp4 && f.height) {
+          const current = videoFormatsMap.get(f.height);
+          const hasAudio = f.acodec && f.acodec !== 'none';
+          const currentHasAudio = current && current.hasAudio;
+          if (!current || (hasAudio && !currentHasAudio) || ((f.tbr || 0) > (current.tbr || 0) && hasAudio === currentHasAudio)) {
             videoFormatsMap.set(f.height, {
               quality: `${f.height}p ${f.fps ? f.fps + 'FPS' : ''}`,
               ext: `.mp4`,
@@ -69,12 +104,14 @@ app.get('/api/info', (req, res) => {
               filesize: f.filesize || f.filesize_approx || 0,
               fps: f.fps ? `${f.fps} FPS` : '30 FPS',
               height: f.height,
+              hasAudio: Boolean(hasAudio),
+              tbr: f.tbr || 0,
               available: true
             });
           }
         }
 
-        // Audio formats
+        // Show the actual source bitrate; the download endpoint converts it to MP3.
         if (f.acodec && f.acodec !== 'none' && f.abr) {
           const abr = Math.round(f.abr);
           if (!audioFormatsMap.has(abr)) {
@@ -125,47 +162,83 @@ app.get('/api/download', (req, res) => {
   if (!videoUrl) {
     return res.status(400).send('Missing video URL');
   }
+  if (!isValidYouTubeUrl(videoUrl)) {
+    return res.status(400).send('Please provide a valid HTTPS YouTube URL');
+  }
+  if (!['video', 'audio'].includes(type)) {
+    return res.status(400).send('Invalid media type');
+  }
+  if (formatId && formatId !== 'undefined' && !/^[a-zA-Z0-9_-]+$/.test(formatId)) {
+    return res.status(400).send('Invalid format identifier');
+  }
 
   const timestamp = Date.now();
   const ext = type === 'audio' ? '.mp3' : '.mp4';
   const cleanName = `YouTube_Video_${timestamp}${ext}`;
+  const tempDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'yt-download-'));
+  const outputTemplate = path.join(tempDirectory, 'media.%(ext)s');
+  const selectedFormat = formatId && formatId !== 'undefined' ? formatId : null;
+  const formatArg = type === 'audio'
+    ? (selectedFormat ? `${selectedFormat}/bestaudio` : 'bestaudio')
+    : (selectedFormat ? `${selectedFormat}+bestaudio[ext=m4a]/${selectedFormat}/best[ext=mp4]` : 'bestvideo[ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/best[ext=mp4]');
 
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Expose-Headers', 'Content-Length, Content-Disposition');
-  res.setHeader('Content-Disposition', `attachment; filename="${cleanName}"`);
-  res.setHeader('Content-Type', type === 'audio' ? 'audio/mpeg' : 'video/mp4');
+  console.log(`Preparing ${type} download: format ${formatArg} for ${videoUrl}`);
 
-  // Progressive single file format selector or best audio/video combo
-  const formatArg = (type === 'audio')
-    ? (formatId && formatId !== 'undefined' ? `${formatId}/140/m4a/ba/bestaudio` : '140/m4a/ba/bestaudio')
-    : (formatId && formatId !== 'undefined' ? `${formatId}/18/22/b/best` : '18/22/b/best');
-
-  console.log(`Direct chunked stream download: format ${formatArg} for ${videoUrl}`);
-
-  // Spawn yt-dlp with ios/web_embedded player client bypass to stream raw binary MP4 file
-  const ytProcess = spawn(YTDLP_BIN, [
+  const args = [
     '--extractor-args', 'youtube:player_client=ios,web_embedded',
     '-f', formatArg,
     '--no-playlist',
-    '-o', '-',
-    videoUrl
-  ]);
+    '--no-part',
+    '-o', outputTemplate
+  ];
+  if (type === 'audio') {
+    args.push('--extract-audio', '--audio-format', 'mp3', '--audio-quality', '0');
+  } else {
+    args.push('--merge-output-format', 'mp4');
+  }
+  args.push(videoUrl);
 
-  ytProcess.stdout.pipe(res);
-
-  ytProcess.stderr.on('data', (data) => {
-    // Suppress non-critical logs
+  const ytProcess = spawn(YTDLP_BIN, args);
+  let stderr = '';
+  ytProcess.stderr.on('data', data => {
+    stderr += data.toString();
+    if (stderr.length > 8000) stderr = stderr.slice(-8000);
   });
 
   ytProcess.on('error', (error) => {
     console.error('yt-dlp stream error:', error);
-    if (!res.headersSent) {
-      res.status(500).send('Stream error');
-    }
+    removeDirectory(tempDirectory);
+    if (!res.headersSent) res.status(500).send('Unable to start the media downloader');
   });
 
-  req.on('close', () => {
-    ytProcess.kill();
+  ytProcess.on('close', (code) => {
+    if (!fs.existsSync(tempDirectory)) return;
+    if (code !== 0) {
+      console.error(`yt-dlp exited with code ${code}: ${stderr}`);
+      removeDirectory(tempDirectory);
+      if (!res.headersSent) res.status(502).send('YouTube could not prepare this media format');
+      return;
+    }
+
+    const files = fs.readdirSync(tempDirectory);
+    const outputFile = files.find(file => file.endsWith(ext));
+    if (!outputFile) {
+      console.error(`Expected ${ext} output, found: ${files.join(', ')}`);
+      removeDirectory(tempDirectory);
+      if (!res.headersSent) res.status(500).send('The converted media file was not created');
+      return;
+    }
+
+    const outputPath = path.join(tempDirectory, outputFile);
+    res.download(outputPath, cleanName, error => {
+      removeDirectory(tempDirectory);
+      if (error && !res.headersSent) res.status(500).send('Download transfer failed');
+    });
+  });
+
+  req.on('aborted', () => {
+    if (!ytProcess.killed) ytProcess.kill('SIGTERM');
+    removeDirectory(tempDirectory);
   });
 });
 
