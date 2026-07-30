@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oliv Brand</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Subtle Ambient Radial Background Lighting -->
+  <div class="ambient-bg-orb orb-1"></div>
+  <div class="ambient-bg-orb orb-2"></div>
+  <canvas id="dynamic-canvas"></canvas>
+
+  <!-- Minimalist Glass Header Navigation -->
+  <header class="minimal-header">
+    <a href="#" class="brand-minimal">
+      <div class="brand-mark">OL</div>
+      <div class="brand-title">Oliv.AI</div>
+      <div class="brand-sub">Autonomous Sales Intelligence</div>
+    </a>
+
+    <!-- Navigation Links -->
+    <nav class="nav-links">
+      <a href="#features" class="nav-link">AI Capabilities</a>
+      <a href="#roi-calculator" class="nav-link">ROI Calculator</a>
+      <a href="#social-proof" class="nav-link">Social Proof</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+    </nav>
+
+    <!-- Right Controls: Theme Toggle & Icon-Only Exit Button -->
+    <div style="display:flex; gap:12px; align-items:center;">
+      <button id="btn-toggle-theme" class="btn-minimal-secondary" style="display:flex; align-items:center; gap:6px;">
+        <span id="theme-icon">☀️</span> <span id="theme-label">Light Mode</span>
+      </button>
+
+      <a href="../main_portfolio/index.html" class="header-exit-btn" title="Exit to Master Portfolio Hub">
+        <span>Exit Project</span>
+        <span style="font-size:14px; font-weight:700;">✕</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Container Frame -->
+  <main class="page-container">
+
+    <!-- HERO BRAND EXPERIENCE SECTION -->
+    <section class="hero-marketing">
+      <div class="hero-pill-badge">
+        ✨ Announcing Oliv AI 2.0 &bull; Autonomous Sales Agents
+      </div>
+
+      <h1 class="hero-marketing-headline">
+        The Autonomous AI Workforce for <span class="hero-gradient-text">Revenue Teams</span>
+      </h1>
+
+      <p class="hero-marketing-description">
+        Eliminate manual CRM entry, automate MEDDICC deal qualification, and empower your Account Executives to focus 100% on closing revenue.
+      </p>
+
+      <div style="display:flex; gap:16px; justify-content:center; margin-bottom:48px;">
+        <a href="mailto:sohaib@duck.com" class="btn-minimal-primary" style="padding:14px 28px; font-size:14px; text-decoration:none;">
+          <span>Request Private Demo</span>
+          <span>→</span>
+        </a>
+        <a href="#features" class="btn-minimal-secondary" style="padding:14px 28px; font-size:14px; text-decoration:none;">
+          <span>Explore AI Capabilities</span>
+        </a>
+      </div>
+
+      <!-- INTERACTIVE AUDIO WAVEFORM SIMULATOR CARD -->
+      <div class="hero-waveform-card">
+        <div class="waveform-header">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--semantic-emerald); box-shadow:0 0 8px var(--semantic-emerald);"></span>
+            <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-primary); font-weight:600;">LIVE CALL INTELLIGENCE EXTRACTION</span>
+          </div>
+          <span style="font-family:var(--font-mono); font-size:11px; color:var(--accent-cyan);">98.4% Confidence</span>
+        </div>
+
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.5; margin-bottom:12px;">
+          <strong style="color:var(--text-primary);">Prospect (CFO):</strong> "We have $500,000 pre-approved for Q3 deployment if we can verify SOC-2 compliance."
+        </div>
+
+        <div class="waveform-bars-container" id="waveform-bars">
+          <!-- Animated audio bars rendered dynamically by app.js -->
+        </div>
+
+        <div style="background:var(--bg-subcard); border:1px solid var(--border-subtle); border-radius:8px; padding:12px 16px; display:flex; justify-content:space-between; align-items:center;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span style="font-family:var(--font-mono); font-size:11px; color:var(--accent-brand); font-weight:700;">AI EXTRACTED:</span>
+            <span style="font-size:12px; color:var(--semantic-emerald); font-weight:600;">Metrics ($M): 95% &bull; Economic Buyer ($E$): 90%</span>
+          </div>
+          <span style="font-size:11px; color:var(--text-tertiary);">Auto-Synced to Salesforce</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 01: INTERACTIVE AI FEATURE SHOWCASE -->
+    <section id="features" style="padding:60px 0;">
+      <div class="section-header-block">
+        <span class="section-tag">01. PLATFORM CAPABILITIES</span>
+        <h2 class="section-title">Engineered for Revenue Velocity</h2>
+        <p class="section-subtitle">
+          How Oliv Autonomous Agents transform unstructured meeting calls into crystalline deal telemetry.
+        </p>
+      </div>
+
+      <!-- Feature Tabs Bar -->
+      <div class="feature-tabs-bar">
+        <button class="feature-tab-btn active" onclick="switchFeatureTab(0)">01. Autonomous Call Intelligence</button>
+        <button class="feature-tab-btn" onclick="switchFeatureTab(1)">02. Zero-Friction CRM Sync</button>
+        <button class="feature-tab-btn" onclick="switchFeatureTab(2)">03. Revenue Risk Radar</button>
+      </div>
+
+      <!-- Feature Display Card -->
+      <div class="glass-spotlight-card" id="feature-display-card">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- SECTION 02: DYNAMIC REP ROI & TIME SAVED CALCULATOR -->
+    <section id="roi-calculator" style="padding:60px 0;">
+      <div class="glass-spotlight-card">
+        <div class="section-header-block" style="margin-bottom:32px;">
+          <span class="section-tag">02. BUSINESS IMPACT CALCULATOR</span>
+          <h2 class="section-title">Calculate Your Team's Time & Revenue Uplift</h2>
+          <p class="section-subtitle">
+            See how much time your Account Executives save and how much pipeline velocity increases with Oliv AI:
+          </p>
+        </div>
+
+        <div class="roi-card-grid">
+          <!-- Controls Column -->
+          <div class="subcard-pane">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <label style="font-family:var(--font-heading); font-weight:600; font-size:14px; color:var(--text-primary);">Number of Account Executives (AEs)</label>
+              <span id="roi-rep-count" style="font-family:var(--font-mono); font-size:18px; font-weight:700; color:var(--accent-brand);">20 AEs</span>
+            </div>
+
+            <input type="range" class="custom-range-slider" min="5" max="100" value="20" id="roi-slider" oninput="updateRoiCalculator(this.value)" style="margin-bottom:24px;">
+
+            <div style="font-size:12px; color:var(--text-tertiary); line-height:1.5;">
+              Based on empirical customer benchmarks: <strong>4.5 hours saved per rep every week</strong> from manual CRM updates and Gong scorecard filling.
+            </div>
+          </div>
+
+          <!-- Results Callout Column -->
+          <div class="subcard-pane" style="background:var(--bg-card); border-color:var(--border-medium); text-align:center;">
+            <span style="font-family:var(--font-mono); font-size:11px; color:var(--accent-cyan); text-transform:uppercase; font-weight:600;">ANNUAL TIME SAVED</span>
+            <div class="roi-metric-callout" id="roi-hours-saved">4,680 Hours</div>
+            <div style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">Reallocated directly to active customer selling</div>
+
+            <div style="border-top:1px solid var(--border-subtle); padding-top:14px; display:flex; justify-style:space-around;">
+              <div>
+                <div style="font-family:var(--font-mono); font-size:18px; font-weight:700; color:var(--semantic-emerald);" id="roi-pipeline-uplift">+$420,000</div>
+                <div style="font-size:11px; color:var(--text-tertiary);">Est. Pipeline Velocity Uplift</div>
+              </div>
+              <div>
+                <div style="font-family:var(--font-mono); font-size:18px; font-weight:700; color:var(--accent-brand);">100%</div>
+                <div style="font-size:11px; color:var(--text-tertiary);">Unbiased CRM Accuracy</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 03: CUSTOMER SOCIAL PROOF & TESTIMONIAL WALL -->
+    <section id="social-proof" style="padding:60px 0;">
+      <div class="section-header-block">
+        <span class="section-tag">03. CUSTOMER TRUST & SOCIAL PROOF</span>
+        <h2 class="section-title">Trusted by Modern Revenue Leaders</h2>
+        <p class="section-subtitle">
+          Here is how enterprise RevOps executives accelerate deal velocity with Oliv Autonomous AI.
+        </p>
+      </div>
+
+      <div class="testimonial-grid">
+        
+        <div class="glass-spotlight-card testimonial-card">
+          <div>
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--semantic-emerald); margin-bottom:12px;">+38% PIPELINE VELOCITY</div>
+            <p class="testimonial-quote">
+              "Oliv eliminated manual Gong scorecard entry across our entire 40-rep sales team. Our AEs save 4.5 hours every week and our forecast accuracy jumped overnight."
+            </p>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar">SJ</div>
+            <div>
+              <div style="font-family:var(--font-heading); font-weight:700; font-size:13.5px; color:var(--text-primary);">Sarah Jenkins</div>
+              <div style="font-size:11px; color:var(--text-tertiary);">VP of RevOps &bull; Stripe Systems</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-spotlight-card testimonial-card">
+          <div>
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-cyan); margin-bottom:12px;">ZERO REVISION FRICTION</div>
+            <p class="testimonial-quote">
+              "The AI Risk Radar alerted us immediately when an Economic Buyer was missing from a key enterprise call. That single alert saved a $750k proposal from stalling."
+            </p>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar">MV</div>
+            <div>
+              <div style="font-family:var(--font-heading); font-weight:700; font-size:13.5px; color:var(--text-primary);">Marcus Vance</div>
+              <div style="font-size:11px; color:var(--text-tertiary);">Chief Revenue Officer &bull; Datadog Cloud</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-spotlight-card testimonial-card">
+          <div>
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-brand); margin-bottom:12px;">100% DATA TRUST</div>
+            <p class="testimonial-quote">
+              "Unlike generic transcription tools, Oliv links every MEDDICC metric directly to transcript citations. Our reps trust the data completely."
+            </p>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar">ER</div>
+            <div>
+              <div style="font-family:var(--font-heading); font-weight:700; font-size:13.5px; color:var(--text-primary);">Elena Rostova</div>
+              <div style="font-size:11px; color:var(--text-tertiary);">Head of Sales &bull; Acme Corp</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 04: TRANSPARENT ENTERPRISE PRICING MATRIX -->
+    <section id="pricing" style="padding:60px 0;">
+      <div class="section-header-block">
+        <span class="section-tag">04. TRANSPARENT PRICING</span>
+        <h2 class="section-title">Simple, Predictable Plans</h2>
+        <p class="section-subtitle">
+          Scale your revenue AI workforce seamlessly as your team grows. Click any card to select:
+        </p>
+      </div>
+
+      <!-- Segmented Billing Switcher -->
+      <div class="pricing-switcher">
+        <div class="tab-segmented-bar" id="billing-segmented-bar">
+          <button class="billing-tab-btn" onclick="setBillingPeriod(false)">Monthly Billing</button>
+          <button class="billing-tab-btn active" onclick="setBillingPeriod(true)">Annual Billing (Save 20%)</button>
+        </div>
+      </div>
+
+      <div class="pricing-grid" id="pricing-cards-container">
+        
+        <!-- Starter Plan -->
+        <div class="glass-spotlight-card pricing-card" style="cursor:pointer;" onclick="selectPricingCard(this)">
+          <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-tertiary); text-transform:uppercase;">STARTER</div>
+          <div class="pricing-price" id="price-starter">$49<span style="font-size:14px; font-weight:400; color:var(--text-tertiary);">/rep/mo</span></div>
+          <div style="font-size:12px; color:var(--text-secondary);">Ideal for emerging sales teams up to 10 reps.</div>
+
+          <ul class="pricing-features-list">
+            <li>✓ Unlimited Call Transcription</li>
+            <li>✓ Automated MEDDICC Scorecards</li>
+            <li>✓ Salesforce & HubSpot Sync</li>
+            <li>✓ Email & Transcript Citations</li>
+          </ul>
+
+          <a href="mailto:sohaib@duck.com" class="btn-minimal-secondary" style="width:100%; text-decoration:none;" onclick="event.stopPropagation()">Start Free Trial</a>
+        </div>
+
+        <!-- Scale Plan (Featured by Default) -->
+        <div class="glass-spotlight-card pricing-card featured" style="cursor:pointer; background:var(--bg-surface); border-color:var(--accent-brand);" onclick="selectPricingCard(this)">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-brand); font-weight:700; text-transform:uppercase;">SCALE (MOST POPULAR)</div>
+            <span style="font-size:10px; background:var(--accent-brand); color:#fff; padding:2px 8px; border-radius:10px; font-family:var(--font-mono);">RECOMMENDED</span>
+          </div>
+          <div class="pricing-price" id="price-scale">$99<span style="font-size:14px; font-weight:400; color:var(--text-tertiary);">/rep/mo</span></div>
+          <div style="font-size:12px; color:var(--text-secondary);">For growing revenue teams scaling pipeline velocity.</div>
+
+          <ul class="pricing-features-list">
+            <li>✓ All Starter Features Included</li>
+            <li>✓ AI Deal Risk Radar Alerts</li>
+            <li>✓ Custom MEDDICC Weighting</li>
+            <li>✓ Executive Revenue Forecasting</li>
+            <li>✓ Dedicated RevOps Onboarding</li>
+          </ul>
+
+          <a href="mailto:sohaib@duck.com" class="btn-minimal-primary" style="width:100%; text-decoration:none;" onclick="event.stopPropagation()">Get Started</a>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="glass-spotlight-card pricing-card" style="cursor:pointer;" onclick="selectPricingCard(this)">
+          <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-cyan); text-transform:uppercase;">ENTERPRISE</div>
+          <div class="pricing-price">Custom</div>
+          <div style="font-size:12px; color:var(--text-secondary);">Custom security, compliance, and dedicated models for large orgs.</div>
+
+          <ul class="pricing-features-list">
+            <li>✓ All Scale Features Included</li>
+            <li>✓ Custom LLM & Private Cloud Hosting</li>
+            <li>✓ SOC-2 Type II & HIPAA Compliance</li>
+            <li>✓ Custom API & Webhook Integrations</li>
+            <li>✓ 24/7 Priority SLA Support</li>
+          </ul>
+
+          <a href="mailto:sohaib@duck.com" class="btn-minimal-secondary" style="width:100%; text-decoration:none;" onclick="event.stopPropagation()">Contact Sales</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CLEAN, UNCLUBBED ISOLATED FOOTER CARD WITH DISCLAIMER ONLY -->
+    <footer class="footer-glass-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:12px; margin-bottom:14px;">
+        <span style="font-family:var(--font-mono); font-size:10.5px; color:var(--accent-brand); letter-spacing:0.06em; text-transform:uppercase;">PORTFOLIO DISCLAIMER & NOTICE</span>
+      </div>
+
+      <p style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-bottom:14px;">
+        This case study and interactive product architecture prototype is an independent design presentation created by <strong>Sohaib Ahmer</strong>. All product concepts, brand references, logos, and trademarks related to <strong>Oliv.AI</strong> remain the intellectual property of Oliv.AI.
+      </p>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; font-size:11.5px; color:var(--text-tertiary); border-top:1px solid var(--border-subtle); padding-top:12px;">
+        <div style="font-family:var(--font-heading); font-weight:600; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+          <span>Visual UI & Product Design Portfolio</span> &bull; 
+          <a href="mailto:sohaib@duck.com" style="color:var(--accent-cyan); text-decoration:none; transition:color 0.15s ease;">sohaib@duck.com</a> &bull;
+          <a href="https://www.linkedin.com/in/sohaibahmer/" target="_blank" rel="noopener noreferrer" style="color:var(--accent-cyan); text-decoration:none; display:inline-flex; align-items:center; gap:4px; transition:color 0.15s ease;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.78a1.64 1.64 0 1 0 0 3.28 1.64 1.64 0 0 0 0-3.28Z"/></svg>
+            <span>LinkedIn</span>
+          </a>
+        </div>
+        <div style="font-family:var(--font-mono);">
+          Designed for Oliv.AI &bull; © 2026 All Rights Reserved
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>miffuser &bull; Product Design Case Study & PWA</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- FLOATING HEADER NAV WITH EXIT BUTTON -->
+  <header class="floating-header-nav">
+    <a href="../main_portfolio/index.html" class="brand-stamp">
+      <div class="brand-stamp-icon">SA</div>
+      <div class="brand-stamp-text">Sohaib Ahmer</div>
+    </a>
+
+    <div class="header-right-actions">
+      <a href="https://miffuser.netlify.app/" target="_blank" rel="noopener" class="header-live-app-btn">
+        <span>Live App ↗</span>
+      </a>
+
+      <!-- Exit Button linking back to Master Portfolio Hub -->
+      <a href="../main_portfolio/index.html" class="header-exit-btn" title="Exit to Master Portfolio Hub">
+        <span>Exit Project</span>
+        <span style="font-size:14px; font-weight:700;">✕</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="page-container">
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+      <div class="badge-tag">
+        PRODUCT DESIGN CASE STUDY &bull; 2026
+      </div>
+
+      <div class="festival-subhead">
+        19TH MUMBAI INTERNATIONAL FILM FESTIVAL &bull; JUNE 15-21, 2026
+      </div>
+
+      <h1 class="main-title">miffuser</h1>
+      <p class="main-sub">
+        A single-file Progressive Web App that puts the entire MIFF 2026 programme, 349 films across 7 days and 7 venues, in your pocket. Offline. Installed. No app store.
+      </p>
+
+      <!-- KEY METRICS GRID -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-value">349</div>
+          <div class="metric-label">FILMS</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">1</div>
+          <div class="metric-label">HTML FILE</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">462<span class="unit">KB</span></div>
+          <div class="metric-label">TOTAL SIZE</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">10</div>
+          <div class="metric-label">FILTER DIMS</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">0</div>
+          <div class="metric-label">DEPENDENCIES</div>
+        </div>
+      </div>
+
+      <!-- TECH STACK TAGS -->
+      <div class="tech-tags-row">
+        <span class="tech-tag highlight">PWA</span>
+        <span class="tech-tag">OFFLINE FIRST</span>
+        <span class="tech-tag">SERVICE WORKER</span>
+        <span class="tech-tag">SINGLE FILE</span>
+        <span class="tech-tag mode">DARK / LIGHT MODE</span>
+        <span class="tech-tag">LOCALSTORAGE</span>
+        <span class="tech-tag">NO FRAMEWORK</span>
+        <span class="tech-tag">PDF EXPORT</span>
+      </div>
+
+      <!-- INTERACTIVE MOBILE DEVICE PREVIEW (OPENS LIVE APP IN MOBILE VIEW BY DEFAULT) -->
+      <div class="mobile-preview-container">
+        <div class="mobile-device-header">
+          <div class="device-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="device-title">miffuser.netlify.app &bull; Mobile Preview Mode</div>
+          <a href="https://miffuser.netlify.app/" target="_blank" rel="noopener" class="device-launch-btn">
+            Open Fullscreen ↗
+          </a>
+        </div>
+
+        <div class="phone-frame-wrapper">
+          <div class="phone-frame">
+            <iframe src="https://miffuser.netlify.app/" title="miffuser Live Mobile PWA" class="phone-iframe"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 01: PROJECT OVERVIEW -->
+    <section class="case-section">
+      <div class="section-num">01 &bull; PROJECT OVERVIEW</div>
+      <h2 class="section-heading">The constraint is the concept.</h2>
+      <p class="section-desc">
+        miffuser began with a single constraint: <strong>one file</strong>. No build toolchain, no CDN, no server. The entire festival programme, 349 films with schedules, descriptions, and catalogue images, lives in a single <code>index.html</code> that deploys to any static host and runs fully offline after first visit.
+      </p>
+
+      <div class="stats-mini-bar">
+        <div class="stat-item"><span class="num">349</span><span class="lbl">FILMS</span></div>
+        <div class="stat-item"><span class="num">7</span><span class="lbl">DAYS</span></div>
+        <div class="stat-item"><span class="num">7</span><span class="lbl">VENUES</span></div>
+        <div class="stat-item"><span class="num">0</span><span class="lbl">DEPENDENCIES</span></div>
+        <div class="stat-item"><span class="num">462 KB</span><span class="lbl">TOTAL SIZE</span></div>
+      </div>
+    </section>
+
+    <!-- SECTION 02: ARCHITECTURE -->
+    <section class="case-section">
+      <div class="section-num">02 &bull; ARCHITECTURE</div>
+      <h2 class="section-heading">Single-file PWA stack</h2>
+
+      <div class="table-wrapper">
+        <table class="arch-table">
+          <thead>
+            <tr>
+              <th>LAYER</th>
+              <th>TECHNOLOGY</th>
+              <th>NOTES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Data</strong></td>
+              <td><code>JS array literal</code></td>
+              <td>349 film objects parsed at startup, zero latency</td>
+            </tr>
+            <tr>
+              <td><strong>UI</strong></td>
+              <td><code>Vanilla JS + HTML</code></td>
+              <td>Direct DOM templating, no virtual DOM, no diffing</td>
+            </tr>
+            <tr>
+              <td><strong>Styles</strong></td>
+              <td><code>CSS custom props</code></td>
+              <td>Full dark/light system via :root token swap</td>
+            </tr>
+            <tr>
+              <td><strong>Offline</strong></td>
+              <td><code>Service Worker</code></td>
+              <td>Cache-first app-shell, all 349 images precached</td>
+            </tr>
+            <tr>
+              <td><strong>Install</strong></td>
+              <td><code>Web App Manifest</code></td>
+              <td>beforeinstallprompt, iOS and Android paths</td>
+            </tr>
+            <tr>
+              <td><strong>State</strong></td>
+              <td><code>localStorage</code></td>
+              <td>11 keys: list, ratings, notes, priorities, settings</td>
+            </tr>
+            <tr>
+              <td><strong>Export</strong></td>
+              <td><code>window.open + print</code></td>
+              <td>Client-side PDF, no server, no library</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout-box accent-gold">
+        <div class="callout-title">Why no framework?</div>
+        <p>At festival scale (349 records, single-user, no real-time sync), a framework adds bundle size and complexity with zero benefit. Vanilla JS renders the full schedule in under 16ms. The constraint produced the architecture.</p>
+      </div>
+
+      <blockquote class="quote-box">
+        "What does a real MIFF attendee need on their phone at 9am, offline, queueing for Audi 1?"
+        <div class="quote-sub">That question shaped every feature decision, from Live Mode to package slot offset timing.</div>
+      </blockquote>
+    </section>
+
+    <!-- SECTION 03: SCHEDULE VIEW -->
+    <section class="case-section">
+      <div class="section-num">03 &bull; SCHEDULE VIEW</div>
+      <h2 class="section-heading">The main interface.</h2>
+
+      <div class="features-grid-2col">
+        <div class="feature-card">
+          <div class="card-tag">INTERFACE ELEMENT</div>
+          <h3>1. App Header & Live Clock</h3>
+          <p>Icon, title, tagline. Live clock showing current time. Persists across all views.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-tag">REAL-TIME ENGINE</div>
+          <h3>2. Live Now Toggle</h3>
+          <p>Activates real-time mode. Filters to films currently screening or about to start. Refreshes every 60 seconds.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-tag">NAVIGATION</div>
+          <h3>3. Day Tabs</h3>
+          <p>One per festival day (Jun 15-21) plus All Days. Active tab in gold. In Live Mode, past days are hidden automatically.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-tag">SEARCH</div>
+          <h3>4. Full-Text Search Bar</h3>
+          <p>Full-text search across title, director, country, section, language, and venue. Composes with active filters in real time.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-tag">FILTERS</div>
+          <h3>5. 10-Dimension Filter Panel</h3>
+          <p>Opens 10-dimension filter panel. Badge shows active filter count when filters are applied.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-tag">STRUCTURE</div>
+          <h3>6. Time-slot Header & Film Cards</h3>
+          <p>Films grouped by screening start time. Title, exact screening window, package slot, venue tag, duration, country, section, director, language.</p>
+        </div>
+      </div>
+
+      <div class="callout-box accent-blue">
+        <div class="callout-title">Live Mode Logic</div>
+        <p>The schedule clock drives every visible element: active day tab, time-slot visibility, and the "Ended" badge on each film card. Everything updates passively without a refresh.</p>
+      </div>
+    </section>
+
+    <!-- SECTION 04: FILM DETAIL MODAL -->
+    <section class="case-section">
+      <div class="section-num">04 &bull; FILM DETAIL MODAL</div>
+      <h2 class="section-heading">Every film. Everything.</h2>
+
+      <div class="grid-2col-list">
+        <div class="list-item-card">
+          <h4>1. Drag Pill + Close</h4>
+          <p>Bottom-sheet indicator. Dismisses on tap outside or X. Android back button also dismisses.</p>
+        </div>
+        <div class="list-item-card">
+          <h4>2. Section Tag</h4>
+          <p>Festival section in red. Always the first element, gives instant context.</p>
+        </div>
+        <div class="list-item-card">
+          <h4>3. Watched Toggle</h4>
+          <p>Marks film as watched. Unlocks the post-watch thoughts notes field.</p>
+        </div>
+        <div class="list-item-card">
+          <h4>4. Metadata Tags</h4>
+          <p>Country, duration, year, language as pill tags color-coded by type.</p>
+        </div>
+        <div class="list-item-card">
+          <h4>5. Catalogue Image</h4>
+          <p>Official MIFF 2026 catalogue page crop with exact page number. Sourced from official materials.</p>
+        </div>
+        <div class="list-item-card">
+          <h4>6. Screening Schedule</h4>
+          <p>All slots. Each row shows offset time, package window, venue, date, and an Add button for that slot.</p>
+        </div>
+      </div>
+
+      <div class="principles-dual-row">
+        <div class="principle-box">
+          <h5>Catalogue Image as Information</h5>
+          <p>When no synopsis exists in the official catalogue, the scanned page replaces it. Attendees get exactly what MIFF published: nothing invented.</p>
+        </div>
+        <div class="principle-box">
+          <h5>Screening-Level Saves</h5>
+          <p>Saving a film saves the specific date, time, and venue slot, not just the title. A film screening four times requires a real decision.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 05: FILTER PANEL & MY LIST -->
+    <section class="case-section">
+      <div class="section-num">05 &bull; FILTER PANEL AND MY LIST</div>
+      <h2 class="section-heading">Curate. Save. Track.</h2>
+
+      <div class="table-wrapper">
+        <table class="arch-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>DIMENSION</th>
+              <th>OPTIONS</th>
+              <th>SAMPLE VALUES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>01</td>
+              <td><strong>Priority Mark</strong></td>
+              <td>4</td>
+              <td>Must Watch, Priority, Good to Go, Unmarked</td>
+            </tr>
+            <tr>
+              <td>02</td>
+              <td><strong>Section</strong></td>
+              <td>30+</td>
+              <td>MIFF Prism, Short Comp, Animation Canvas, Best of Fest, Emerging Voices</td>
+            </tr>
+            <tr>
+              <td>03</td>
+              <td><strong>Country / Language</strong></td>
+              <td>55 / 74</td>
+              <td>Argentina to Vietnam. Ao to Without Dialogue, across 6 continents</td>
+            </tr>
+            <tr>
+              <td>04</td>
+              <td><strong>Venue</strong></td>
+              <td>7</td>
+              <td>Audi 1, Audi 2, RR III, JB Hall, IICT, SVKM, Ravindra Natya Mandir</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 06: LIGHT MODE & THEMING -->
+    <section class="case-section">
+      <div class="section-num">06 &bull; LIGHT MODE AND THEMING</div>
+      <h2 class="section-heading">Same app. Different light.</h2>
+
+      <!-- COLOUR SYSTEM TOKENS DISPLAY -->
+      <div class="color-tokens-grid">
+        <div class="color-token-card" style="border-top: 4px solid #1A1F3E;">
+          <div class="token-swatch" style="background:#1A1F3E;"></div>
+          <div class="token-name">#1a1f3e</div>
+          <div class="token-role">Navy Header / Base</div>
+        </div>
+        <div class="color-token-card" style="border-top: 4px solid #F0C040;">
+          <div class="token-swatch" style="background:#F0C040;"></div>
+          <div class="token-name">#f0c040</div>
+          <div class="token-role">Gold Active / Selected</div>
+        </div>
+        <div class="color-token-card" style="border-top: 4px solid #E8284A;">
+          <div class="token-swatch" style="background:#E8284A;"></div>
+          <div class="token-name">#e8284a</div>
+          <div class="token-role">Red Section / Danger</div>
+        </div>
+        <div class="color-token-card" style="border-top: 4px solid #7FC44C;">
+          <div class="token-swatch" style="background:#7FC44C;"></div>
+          <div class="token-name">#7fc44c</div>
+          <div class="token-role">Green Watched / Saved</div>
+        </div>
+        <div class="color-token-card" style="border-top: 4px solid #6A8CC8;">
+          <div class="token-swatch" style="background:#6A8CC8;"></div>
+          <div class="token-name">#6a8cc8</div>
+          <div class="token-role">Blue Venue Meta</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 07: DATA MODEL & PERSISTENCE -->
+    <section class="case-section">
+      <div class="section-num">07 &bull; DATA MODEL AND PERSISTENCE</div>
+      <h2 class="section-heading">15 fields. Zero fetch.</h2>
+      <p class="section-desc">
+        Every film object is complete at parse time. No lazy-loading, no API calls, no spinner. The entire dataset is available the instant the JS executes.
+      </p>
+
+      <div class="table-wrapper">
+        <table class="arch-table">
+          <thead>
+            <tr>
+              <th>KEY</th>
+              <th>TYPE</th>
+              <th>CONTENT</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>savedScreenings</code></td>
+              <td>Object</td>
+              <td>filmId::date::time &rarr; true</td>
+            </tr>
+            <tr>
+              <td><code>miff_priorities</code></td>
+              <td>Object</td>
+              <td>filmId &rarr; "must" | "priority" | "goodtogo"</td>
+            </tr>
+            <tr>
+              <td><code>miff_watched</code></td>
+              <td>Object</td>
+              <td>filmId &rarr; true</td>
+            </tr>
+            <tr>
+              <td><code>miff_ratings</code></td>
+              <td>Object</td>
+              <td>filmId &rarr; emoji rating level</td>
+            </tr>
+            <tr>
+              <td><code>miff_notes</code></td>
+              <td>Object</td>
+              <td>filmId &rarr; {{pre: string, thoughts: string}}</td>
+            </tr>
+            <tr>
+              <td><code>miffuser_mode</code></td>
+              <td>String</td>
+              <td>"dark" or "light"</td>
+            </tr>
+            <tr>
+              <td><code>miffuser_textsize</code></td>
+              <td>String</td>
+              <td>"small" | "medium" | "large" | "xlarge"</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 08: DESIGN DECISIONS -->
+    <section class="case-section">
+      <div class="section-num">08 &bull; DESIGN DECISIONS</div>
+      <h2 class="section-heading">The why behind the what.</h2>
+
+      <div class="decisions-grid">
+        <div class="decision-card">
+          <h4>Screening-level bookmarks</h4>
+          <p>My List saves the specific date/time/venue slot, not just the film. A film screening four times requires a real choice. The bookmark is the commitment, not just the intention.</p>
+        </div>
+
+        <div class="decision-card">
+          <h4>No invented descriptions</h4>
+          <p>Strict data integrity rule: if the official MIFF catalogue provides no synopsis, none is shown. Catalogue page images are used instead. Attendees make real scheduling decisions from this data.</p>
+        </div>
+
+        <div class="decision-card">
+          <h4>Independent filter state</h4>
+          <p>Schedule and My List maintain separate filter contexts. Returning from a filtered My List to Schedule should never produce a view the user did not consciously set.</p>
+        </div>
+
+        <div class="decision-card">
+          <h4>Back button = modal dismiss</h4>
+          <p>Modal open/close is pushed to browser history. Android's physical back button dismisses the modal naturally. Double back-press on the main view shows an exit toast, matching native app behaviour.</p>
+        </div>
+
+        <div class="decision-card">
+          <h4>Package slot offset timing</h4>
+          <p>MIFF programmes short films in packages. "Film C" in a 2PM package might start at 2:18. miffuser calculates and displays the offset start time so attendees know exactly when to walk in.</p>
+        </div>
+
+        <div class="decision-card">
+          <h4>Notes unlocked by state</h4>
+          <p>"Thoughts after watching" is hidden until the film is marked Watched. Intentional friction: it makes writing post-screening feel like a meaningful moment, not a dead form field.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 09: ABOUT & AUTHOR -->
+    <section class="case-section about-card">
+      <div class="section-num">09 &bull; ABOUT</div>
+      <h2 class="section-heading">Built by a filmmaker who needed it.</h2>
+      <p class="section-desc" style="font-size:16px; max-width:720px; margin-bottom:24px;">
+        miffuser was designed and built by <strong>Sohaib Ahmer</strong>, a filmmaker and Master's student in Film & Video Communication at the <strong>National Institute of Design, Ahmedabad</strong>.
+      </p>
+      <p style="color:var(--text-secondary); margin-bottom:32px;">
+        The project sits at the intersection of both fields: a deep understanding of how festival audiences navigate programmes, and the discipline to build a production quality PWA from scratch. miffuser was developed and iterated during the festival itself.
+      </p>
+
+      <div class="about-action-row">
+        <a href="https://miffuser.netlify.app/" target="_blank" rel="noopener" class="btn-live-launch">
+          <span>Launch Live App &bull; miffuser.netlify.app ↗</span>
+        </a>
+        <div class="festival-date-tag">MIFF 2026 &bull; Jun 15-21, Mumbai</div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <div>
+        <strong>miffuser &bull; Product Design Case Study &bull; 2026</strong>
+      </div>
+      <div>
+        Designed & Developed by Sohaib Ahmer (Film & Video Communication, NID Ahmedabad)
+      </div>
+    </footer>
+
+  </main>
+
+</body>
+</html>

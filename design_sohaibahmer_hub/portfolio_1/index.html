@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sohaib Ahmer: Executive Case Study & Product Architecture | Oliv.AI</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Subtle Ambient Radial Background Lighting -->
+  <div class="ambient-bg-orb orb-1"></div>
+  <div class="ambient-bg-orb orb-2"></div>
+  <canvas id="dynamic-canvas"></canvas>
+
+  <!-- Minimalist Glass Header -->
+  <header class="minimal-header">
+    <div class="brand-minimal">
+      <div class="brand-mark">OL</div>
+      <div class="brand-title">Oliv.AI</div>
+      <div class="brand-sub">Autonomous Sales Intelligence</div>
+    </div>
+
+    <!-- Segmented Navigation Pill Switcher -->
+    <div class="tab-segmented-bar">
+      <button class="tab-btn active" data-target="pane-product">01 Product Flow</button>
+      <button class="tab-btn" data-target="pane-simulator">02 Live AI Simulator</button>
+      <button class="tab-btn" data-target="pane-design-system">03 Design System & Tech Stack</button>
+    </div>
+
+    <!-- Right Controls: Single Clean Dark / Light Mode Toggle Button -->
+    <div style="display:flex; gap:12px; align-items:center;">
+      <button id="btn-toggle-theme" class="btn-minimal-secondary" style="display:flex; align-items:center; gap:6px;">
+        <span id="theme-icon">☀️</span> <span id="theme-label">Light Mode</span>
+      </button>
+
+      <a href="mailto:sohaib@duck.com" class="btn-minimal-primary" style="text-decoration:none;">Get in Touch</a>
+    </div>
+  </header>
+
+  <!-- Main Container Frame -->
+  <main class="page-container">
+
+    <!-- PANE 1: PRODUCT FLOW -->
+    <section id="pane-product" class="section-pane active">
+
+      <!-- Hero Section -->
+      <div class="hero-minimal">
+        <span class="hero-tag">Oliv.AI &bull; Autonomous Sales Agent Intelligence</span>
+        <h1 class="hero-headline">Crystalline Deal Intelligence Powered by Sales AI Agents</h1>
+        <p class="hero-description">
+          Capturing deal telemetry from calls and emails automatically, populating MEDDICC scorecards in real-time without sales rep manual data entry.
+        </p>
+      </div>
+
+      <!-- Minimal KPI Stat Ribbon -->
+      <div class="kpi-minimal-grid">
+        <div class="kpi-minimal-card">
+          <div class="kpi-label">Qualified Pipeline</div>
+          <div class="kpi-val" id="kpi-pipeline-val">$2,840,000</div>
+          <div class="kpi-sub" style="color:var(--semantic-emerald);">↑ 14% vs Q2</div>
+        </div>
+
+        <div class="kpi-minimal-card">
+          <div class="kpi-label">Avg MEDDICC Health</div>
+          <div class="kpi-val" id="kpi-avg-val" style="color:var(--semantic-emerald);">81%</div>
+          <div class="kpi-sub" style="color:var(--text-tertiary);">AI Validated Score</div>
+        </div>
+
+        <div class="kpi-minimal-card">
+          <div class="kpi-label">Deal Risk Radar</div>
+          <div class="kpi-val" id="kpi-flagged-val" style="color:var(--semantic-rose);">2 Flagged</div>
+          <div class="kpi-sub" style="color:var(--semantic-rose);">Buyer Absent</div>
+        </div>
+
+        <div class="kpi-minimal-card">
+          <div class="kpi-label">Agent Sync Speed</div>
+          <div class="kpi-val" style="color:var(--accent-cyan);">Instant</div>
+          <div class="kpi-sub" style="color:var(--text-tertiary);">Zero manual input</div>
+        </div>
+      </div>
+
+      <!-- Minimal Toolbar Controls -->
+      <div class="toolbar-minimal">
+        <div class="search-box-minimal">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="Search deals or owners...">
+        </div>
+
+        <div style="display:flex; gap:10px;">
+          <select id="select-stage" style="background:var(--bg-surface); border:1px solid var(--border-subtle); color:var(--text-secondary); padding:8px 12px; border-radius:6px; font-size:12px; cursor:pointer;">
+            <option value="all">All Stages</option>
+            <option value="discovery">Discovery</option>
+            <option value="proposal">Proposal</option>
+            <option value="negotiation">Negotiation</option>
+            <option value="closed won">Closed Won</option>
+          </select>
+
+          <button id="btn-resync" class="btn-minimal-secondary" onclick="resyncAiAgents()">
+            ✨ Re-Sync Agents
+          </button>
+
+          <button class="btn-minimal-primary" onclick="openNewDealModal()">
+            ＋ Add Deal
+          </button>
+        </div>
+      </div>
+
+      <!-- Master Table -->
+      <div class="table-container-minimal">
+        <table class="minimal-table">
+          <thead>
+            <tr>
+              <th>Company & Deal Title</th>
+              <th>Revenue Impact</th>
+              <th>Stage</th>
+              <th>MEDDICC Scorecard</th>
+              <th>AI Risk Signal</th>
+              <th>Account Owner</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <!-- Rendered dynamically by app.js -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- EXECUTIVE CASE STUDY BANNER -->
+      <div class="case-story-card">
+        
+        <!-- Header Bar -->
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:16px;">
+          <div>
+            <span style="font-family:var(--font-mono); font-size:11px; color:var(--accent-brand); letter-spacing:0.06em; text-transform:uppercase;">EXECUTIVE CASE STUDY STORY SUMMARY</span>
+            <h2 style="font-family:var(--font-heading); font-size:22px; font-weight:800; color:var(--text-primary); margin-top:4px;">Automating MEDDICC Deal Qualification for Oliv.AI</h2>
+          </div>
+
+          <button style="background:transparent; border:none; color:var(--text-tertiary); font-size:12px; font-family:var(--font-mono); cursor:pointer;" onclick="toggleCaseStory()">
+            <span id="story-toggle-icon">[ - Hide Strategy ]</span>
+          </button>
+        </div>
+
+        <!-- Balanced 2x2 Grid -->
+        <div id="story-content" class="story-grid-balanced">
+          
+          <div class="deal-style-subcard">
+            <div>
+              <div style="font-family:var(--font-mono); font-size:10.5px; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">01. THE PROBLEM (THE OLD WAY)</div>
+              <div style="font-family:var(--font-heading); font-size:20px; font-weight:700; color:var(--semantic-rose); margin-bottom:10px;">Manual Friction & Rep Fatigue</div>
+            </div>
+            <p style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+              Sales reps waste <strong>4.5+ hours/week</strong> filling out manual Gong & Salesforce scorecards with biased, outdated notes, leaving executive leaders blind to true deal health.
+            </p>
+          </div>
+
+          <div class="deal-style-subcard">
+            <div>
+              <div style="font-family:var(--font-mono); font-size:10.5px; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">02. THE SOLUTION (OLIV PARADIGM)</div>
+              <div style="font-family:var(--font-heading); font-size:20px; font-weight:700; color:var(--accent-brand); margin-bottom:10px;">Zero Friction Automation</div>
+            </div>
+            <p style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+              Autonomous Sales AI Agents parse call transcripts & emails in real-time, auto-extracting MEDDICC metrics and linking quotes directly for 100% data trust.
+            </p>
+          </div>
+
+          <div class="deal-style-subcard">
+            <div>
+              <div style="font-family:var(--font-mono); font-size:10.5px; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">03. TARGET PERSONAS</div>
+              <div style="font-family:var(--font-heading); font-size:20px; font-weight:700; color:var(--accent-cyan); margin-bottom:10px;">Account Executives & RevOps</div>
+            </div>
+            <p style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+              AEs focus 100% on revenue relationship closing; VP of RevOps gains instant AI risk radar alerts whenever Economic Buyers ($E$) are absent.
+            </p>
+          </div>
+
+          <div class="deal-style-subcard">
+            <div>
+              <div style="font-family:var(--font-mono); font-size:10.5px; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">04. MEASURED BUSINESS ROI</div>
+              <div style="font-family:var(--font-heading); font-size:20px; font-weight:700; color:var(--semantic-emerald); margin-bottom:10px;">+38% Pipeline Velocity</div>
+            </div>
+            <p style="font-size:13px; color:var(--semantic-emerald); line-height:1.6;">
+              🎯 100% Unbiased CRM Accuracy<br>
+              ⏱️ 4.5 Hours Saved / Rep / Week
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- PANE 2: LIVE AI SIMULATOR -->
+    <section id="pane-simulator" class="section-pane">
+      <div class="hero-minimal">
+        <span class="hero-tag">Live AI Transcript Engine</span>
+        <h2 style="font-family:var(--font-heading); font-size:28px; font-weight:700; margin-bottom:8px;">Sales Meeting Intelligence Extraction</h2>
+        <p style="color:var(--text-secondary); font-size:14px; margin-bottom:24px; max-width:640px;">
+          Test how Oliv AI Agents analyze transcript quotes, extract MEDDICC metrics, and calculate risk parameters in real-time:
+        </p>
+
+        <div style="display:flex; gap:12px; margin-bottom:24px;">
+          <input type="text" id="sim-input" value="CFO confirmed $750k budget is pre-approved for Q3 deployment." placeholder="Paste transcript quote..." style="flex:1; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:8px; padding:12px 16px; color:var(--text-primary); font-size:13px; outline:none;">
+          <button class="btn-minimal-primary" onclick="runAiSimulator()">✨ Run Intelligence Test</button>
+        </div>
+
+        <div id="sim-output-card" style="display:none; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:12px; padding:24px; grid-template-columns:1fr 1fr; gap:20px;">
+          <div>
+            <span id="sim-status" style="font-family:var(--font-mono); font-size:11px; color:var(--accent-cyan);">AI Status</span>
+            <div id="sim-extracted-score" style="font-family:var(--font-mono); font-size:32px; font-weight:700; color:var(--semantic-emerald); margin:8px 0;">0% MEDDICC</div>
+          </div>
+          <div id="sim-extracted-text" style="font-size:13px; color:var(--text-secondary); line-height:1.5;">
+            Extracted details...
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANE 3: INTERACTIVE UI COMPONENT KIT & DESIGN SYSTEM SPEC -->
+    <section id="pane-design-system" class="section-pane">
+      
+      <!-- Top Banner Header -->
+      <div class="hero-minimal">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <div>
+            <span class="hero-tag">System Design Foundations &bull; Design Tokens</span>
+            <h2 style="font-family:var(--font-heading); font-size:32px; font-weight:800; letter-spacing:-0.02em;">Interactive UI Component Kit & Tech Stack</h2>
+          </div>
+          <button id="btn-copy-tokens" class="btn-minimal-primary" style="display:flex; align-items:center; gap:8px;">
+            <span>📋 Export All Tokens for Devs</span>
+          </button>
+        </div>
+        <p style="color:var(--text-secondary); font-size:14px; max-width:760px; line-height:1.6;">
+          Built on strict design system architecture: <strong>WCAG AAA color contrast compliance</strong>, modular component state tokens, and pixel-perfect typography scales tailored for enterprise revenue software.
+        </p>
+      </div>
+
+      <!-- 1. COLOR TOKENS PALETTE GRID -->
+      <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:14px; padding:28px; margin-bottom:28px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+          <h3 style="font-family:var(--font-heading); font-size:18px; font-weight:700; color:var(--text-primary);">01. Color Palette Tokens</h3>
+          <span style="font-family:var(--font-mono); font-size:11px; color:var(--accent-cyan);">Click any swatch to copy variable</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:16px;">
+          <div class="ds-swatch-card" onclick="copyTokenValue('--bg-canvas', '#070A12')">
+            <div style="height:48px; background:#070A12; border-radius:8px; border:1px solid var(--border-subtle); margin-bottom:10px;"></div>
+            <div style="font-family:var(--font-heading); font-size:13px; font-weight:600; color:var(--text-primary);">Deep Obsidian</div>
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-tertiary); margin-top:2px;">--bg-canvas &bull; #070A12</div>
+            <div style="font-size:10.5px; color:var(--semantic-emerald); margin-top:4px;">AAA 19.4:1 Contrast</div>
+          </div>
+
+          <div class="ds-swatch-card" onclick="copyTokenValue('--bg-surface', '#0F1523')">
+            <div style="height:48px; background:#0F1523; border-radius:8px; border:1px solid var(--border-subtle); margin-bottom:10px;"></div>
+            <div style="font-family:var(--font-heading); font-size:13px; font-weight:600; color:var(--text-primary);">Slate Surface</div>
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-tertiary); margin-top:2px;">--bg-surface &bull; #0F1523</div>
+            <div style="font-size:10.5px; color:var(--semantic-emerald); margin-top:4px;">AAA 14.8:1 Contrast</div>
+          </div>
+
+          <div class="ds-swatch-card" onclick="copyTokenValue('--accent-brand', '#5E5CE6')">
+            <div style="height:48px; background:#5E5CE6; border-radius:8px; margin-bottom:10px; box-shadow:0 0 16px rgba(94,92,230,0.4);"></div>
+            <div style="font-family:var(--font-heading); font-size:13px; font-weight:600; color:var(--text-primary);">Electric Iris (Primary)</div>
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-tertiary); margin-top:2px;">--accent-brand &bull; #5E5CE6</div>
+            <div style="font-size:10.5px; color:var(--semantic-emerald); margin-top:4px;">AAA 6.8:1 Contrast</div>
+          </div>
+
+          <div class="ds-swatch-card" onclick="copyTokenValue('--accent-cyan', '#0A84FF')">
+            <div style="height:48px; background:#0A84FF; border-radius:8px; margin-bottom:10px; box-shadow:0 0 16px rgba(10,132,255,0.4);"></div>
+            <div style="font-family:var(--font-heading); font-size:13px; font-weight:600; color:var(--text-primary);">Cyan Spark</div>
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-tertiary); margin-top:2px;">--accent-cyan &bull; #0A84FF</div>
+            <div style="font-size:10.5px; color:var(--semantic-emerald); margin-top:4px;">AAA 5.2:1 Contrast</div>
+          </div>
+
+          <div class="ds-swatch-card" onclick="copyTokenValue('--semantic-emerald', '#30D158')">
+            <div style="height:48px; background:#30D158; border-radius:8px; margin-bottom:10px;"></div>
+            <div style="font-family:var(--font-heading); font-size:13px; font-weight:600; color:var(--text-primary);">Emerald Signal</div>
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-tertiary); margin-top:2px;">--semantic-emerald &bull; #30D158</div>
+            <div style="font-size:10.5px; color:var(--semantic-emerald); margin-top:4px;">Pass &bull; Health Signal</div>
+          </div>
+
+          <div class="ds-swatch-card" onclick="copyTokenValue('--semantic-amber', '#FFD60A')">
+            <div style="height:48px; background:#FFD60A; border-radius:8px; margin-bottom:10px;"></div>
+            <div style="font-family:var(--font-heading); font-size:13px; font-weight:600; color:var(--text-primary);">Amber Warning</div>
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-tertiary); margin-top:2px;">--semantic-amber &bull; #FFD60A</div>
+            <div style="font-size:10.5px; color:var(--semantic-amber); margin-top:4px;">Warn &bull; Discovery Phase</div>
+          </div>
+
+          <div class="ds-swatch-card" onclick="copyTokenValue('--semantic-rose', '#FF453A')">
+            <div style="height:48px; background:#FF453A; border-radius:8px; margin-bottom:10px;"></div>
+            <div style="font-family:var(--font-heading); font-size:13px; font-weight:600; color:var(--text-primary);">Rose Alert</div>
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-tertiary); margin-top:2px;">--semantic-rose &bull; #FF453A</div>
+            <div style="font-size:10.5px; color:var(--semantic-rose); margin-top:4px;">Alert &bull; Buyer Missing</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. TYPOGRAPHY SCALE & LIVE INTERACTIVE TYPE SPECIMEN -->
+      <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:14px; padding:28px; margin-bottom:28px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+          <div>
+            <h3 style="font-family:var(--font-heading); font-size:18px; font-weight:700; color:var(--text-primary);">02. Typography Hierarchy & Live Specimen Tester</h3>
+            <p style="font-size:12px; color:var(--text-tertiary); margin-top:2px;">Type any phrase to test headings (Plus Jakarta Sans), body (Inter), and telemetry (JetBrains Mono) live:</p>
+          </div>
+          
+          <!-- Font Size Slider -->
+          <div style="display:flex; align-items:center; gap:10px; width:220px;">
+            <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-secondary);">Scale:</span>
+            <input type="range" id="ds-font-scale" class="custom-range-slider" min="14" max="48" value="28" oninput="updateDsFontScale(this.value)">
+            <span id="ds-scale-val" style="font-family:var(--font-mono); font-size:11px; color:var(--accent-cyan); width:32px;">28px</span>
+          </div>
+        </div>
+
+        <input type="text" id="ds-type-tester" value="Autonomous Sales Agent Telemetry for Oliv.AI" placeholder="Type custom sentence..." style="width:100%; background:var(--bg-canvas); border:1px solid var(--border-subtle); border-radius:8px; padding:12px 16px; color:var(--text-primary); font-size:14px; outline:none; margin-bottom:20px;">
+
+        <div style="display:grid; grid-template-columns:1fr; gap:20px;">
+          
+          <div style="background:var(--bg-canvas); padding:20px; border-radius:10px; border:1px solid var(--border-subtle);">
+            <div style="font-family:var(--font-mono); font-size:10px; color:var(--accent-brand); text-transform:uppercase; margin-bottom:8px;">HEADING TYPEFACE &bull; PLUS JAKARTA SANS (800 BOLD)</div>
+            <div id="specimen-heading" style="font-family:var(--font-heading); font-size:28px; font-weight:800; color:var(--text-primary); line-height:1.2;">
+              Autonomous Sales Agent Telemetry for Oliv.AI
+            </div>
+          </div>
+
+          <div style="background:var(--bg-canvas); padding:20px; border-radius:10px; border:1px solid var(--border-subtle);">
+            <div style="font-family:var(--font-mono); font-size:10px; color:var(--accent-cyan); text-transform:uppercase; margin-bottom:8px;">BODY TYPEFACE &bull; INTER (400 REGULAR & 600 SEMIBOLD)</div>
+            <div id="specimen-body" style="font-family:var(--font-body); font-size:15px; color:var(--text-secondary); line-height:1.6;">
+              Autonomous Sales Agent Telemetry for Oliv.AI &bull; Designed to provide pristine readability and instant clarity for executive RevOps teams.
+            </div>
+          </div>
+
+          <div style="background:var(--bg-canvas); padding:20px; border-radius:10px; border:1px solid var(--border-subtle);">
+            <div style="font-family:var(--font-mono); font-size:10px; color:var(--semantic-emerald); text-transform:uppercase; margin-bottom:8px;">TELEMETRY & MONO &bull; JETBRAINS MONO (500 TABULAR NUMERIC)</div>
+            <div id="specimen-mono" style="font-family:var(--font-mono); font-size:16px; color:var(--text-primary); font-variant-numeric:tabular-nums;">
+              Autonomous Sales Agent Telemetry for Oliv.AI &bull; $1,250,000 &bull; 98.4% MATCH
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 3. LIVE INTERACTIVE UI COMPONENT SANDBOX & TELEMETRY LOG -->
+      <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:14px; padding:28px; margin-bottom:28px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+          <div>
+            <h3 style="font-family:var(--font-heading); font-size:18px; font-weight:700; color:var(--text-primary);">03. Live Component Sandbox & Code Exporter</h3>
+            <p style="font-size:12px; color:var(--text-tertiary); margin-top:2px;">Click any button, tab, or badge below to test real-time component state telemetry:</p>
+          </div>
+          <div id="ds-sandbox-status" style="font-family:var(--font-mono); font-size:11px; background:var(--bg-subcard); border:1px solid var(--border-subtle); padding:4px 12px; border-radius:6px; color:var(--accent-cyan);">
+            State: Ready for Interaction
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+          
+          <!-- Column A: Action Buttons & Pill Navigation -->
+          <div style="background:var(--bg-canvas); border:1px solid var(--border-subtle); border-radius:10px; padding:20px;">
+            <div style="font-family:var(--font-mono); font-size:10.5px; color:var(--text-tertiary); text-transform:uppercase; margin-bottom:14px;">BUTTON VARIANTS (CLICK TO TEST REAL-TIME STATE)</div>
+            
+            <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:20px;">
+              <button class="btn-minimal-primary" onclick="testDsButton('Primary Action')">Primary Action</button>
+              <button class="btn-minimal-secondary" onclick="testDsButton('Secondary Action')">Secondary Action</button>
+              <button class="btn-minimal-secondary" style="opacity:0.5; cursor:not-allowed;" onclick="testDsButton('Disabled Action')">Disabled State</button>
+            </div>
+
+            <div style="font-family:var(--font-mono); font-size:10.5px; color:var(--text-tertiary); text-transform:uppercase; margin-bottom:10px;">INTERACTIVE SEGMENTED PILL SWITCHER</div>
+            <div class="tab-segmented-bar" id="ds-sandbox-pills">
+              <button class="sandbox-pill-btn active" onclick="switchDsSandboxTab(this, 'Tab 01 Active')">Tab 01</button>
+              <button class="sandbox-pill-btn" onclick="switchDsSandboxTab(this, 'Tab 02 Selected')">Tab 02</button>
+              <button class="sandbox-pill-btn" onclick="switchDsSandboxTab(this, 'Tab 03 Selected')">Tab 03</button>
+            </div>
+          </div>
+
+          <!-- Column B: Status Badges & Form Inputs -->
+          <div style="background:var(--bg-canvas); border:1px solid var(--border-subtle); border-radius:10px; padding:20px;">
+            <div style="font-family:var(--font-mono); font-size:10.5px; color:var(--text-tertiary); text-transform:uppercase; margin-bottom:14px;">INTERACTIVE STAGE BADGES (CLICK TO FILTER LIVE STATE)</div>
+            
+            <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:20px;">
+              <div class="status-dot-cell" style="cursor:pointer; padding:4px 10px; border-radius:6px; border:1px solid var(--border-subtle);" onclick="testDsBadge('Proposal', 'var(--accent-brand)')">
+                <span class="dot-indicator dot-proposal"></span><span>Proposal</span>
+              </div>
+              <div class="status-dot-cell" style="cursor:pointer; padding:4px 10px; border-radius:6px; border:1px solid var(--border-subtle);" onclick="testDsBadge('Negotiation', 'var(--accent-cyan)')">
+                <span class="dot-indicator dot-negotiation"></span><span>Negotiation</span>
+              </div>
+              <div class="status-dot-cell" style="cursor:pointer; padding:4px 10px; border-radius:6px; border:1px solid var(--border-subtle);" onclick="testDsBadge('Discovery', 'var(--semantic-amber)')">
+                <span class="dot-indicator dot-discovery"></span><span>Discovery</span>
+              </div>
+              <div class="status-dot-cell" style="cursor:pointer; padding:4px 10px; border-radius:6px; border:1px solid var(--border-subtle);" onclick="testDsBadge('Closed Won', 'var(--semantic-emerald)')">
+                <span class="dot-indicator dot-closed"></span><span>Closed Won</span>
+              </div>
+            </div>
+
+            <div style="font-family:var(--font-mono); font-size:10.5px; color:var(--text-tertiary); text-transform:uppercase; margin-bottom:10px;">REACTIVE NUMERIC VALUE INPUT</div>
+            <div style="display:flex; gap:12px;">
+              <input type="text" id="ds-input-sandbox" placeholder="Type numeric value..." value="350000" inputmode="numeric" onkeydown="validateDsNumericKey(event)" oninput="onDsInputType(this.value)" style="flex:1; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:6px; padding:8px 12px; color:var(--text-primary); font-size:12px; outline:none;">
+              <div id="ds-input-output" style="font-family:var(--font-mono); font-size:12px; font-weight:600; color:var(--semantic-emerald); display:flex; align-items:center; padding:0 10px; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:6px;">
+                $350,000
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Live Output Telemetry Box -->
+        <div style="margin-top:18px; background:var(--bg-canvas); border:1px solid var(--border-subtle); border-radius:8px; padding:14px 18px; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <span style="font-family:var(--font-mono); font-size:10px; color:var(--text-tertiary); text-transform:uppercase;">LIVE COMPONENT TELEMETRY LOG</span>
+            <div id="ds-telemetry-log" style="font-family:var(--font-mono); font-size:12px; color:var(--accent-cyan); margin-top:2px;">
+              Click any button, tab, or badge above to trigger live component telemetry.
+            </div>
+          </div>
+          <span style="font-size:11px; color:var(--semantic-emerald);">✓ All Component Tokens Active</span>
+        </div>
+
+      </div>
+
+      <!-- 4. VISUAL TECHNOLOGY STACK CHIPS (MINIMAL, ZERO WALL OF TEXT) -->
+      <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:14px; padding:28px; margin-bottom:28px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+          <div>
+            <h3 style="font-family:var(--font-heading); font-size:18px; font-weight:700; color:var(--text-primary);">04. Technology Stack & System Architecture</h3>
+            <p style="font-size:12px; color:var(--text-tertiary); margin-top:2px;">Minimal visual badge stack driving this web app:</p>
+          </div>
+          <div style="font-family:var(--font-mono); font-size:11px; background:var(--bg-subcard); border:1px solid var(--border-subtle); padding:4px 10px; border-radius:6px; color:var(--accent-cyan);">
+            ⚡ 100% Zero External Dependencies
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:16px;">
+          
+          <div class="deal-style-subcard" style="padding:16px;">
+            <div style="font-family:var(--font-mono); font-size:10px; color:var(--accent-brand); font-weight:700; text-transform:uppercase;">MARKUP</div>
+            <div style="font-family:var(--font-heading); font-size:15px; font-weight:700; color:var(--text-primary); margin:4px 0;">HTML5</div>
+            <div style="font-size:11px; color:var(--text-tertiary);">Semantic W3C Structure</div>
+          </div>
+
+          <div class="deal-style-subcard" style="padding:16px;">
+            <div style="font-family:var(--font-mono); font-size:10px; color:var(--accent-cyan); font-weight:700; text-transform:uppercase;">STYLING</div>
+            <div style="font-family:var(--font-heading); font-size:15px; font-weight:700; color:var(--text-primary); margin:4px 0;">CSS3 Tokens</div>
+            <div style="font-size:11px; color:var(--text-tertiary);">Glassmorphism & Radial Mask</div>
+          </div>
+
+          <div class="deal-style-subcard" style="padding:16px;">
+            <div style="font-family:var(--font-mono); font-size:10px; color:var(--semantic-amber); font-weight:700; text-transform:uppercase;">LOGIC</div>
+            <div style="font-family:var(--font-heading); font-size:15px; font-weight:700; color:var(--text-primary); margin:4px 0;">ES6+ JavaScript</div>
+            <div style="font-size:11px; color:var(--text-tertiary);">Async DOM Event Bus</div>
+          </div>
+
+          <div class="deal-style-subcard" style="padding:16px;">
+            <div style="font-family:var(--font-mono); font-size:10px; color:var(--semantic-emerald); font-weight:700; text-transform:uppercase;">PHYSICS</div>
+            <div style="font-family:var(--font-heading); font-size:15px; font-weight:700; color:var(--text-primary); margin:4px 0;">Canvas 2D Engine</div>
+            <div style="font-size:11px; color:var(--text-tertiary);">Jelly Cursor Simulation</div>
+          </div>
+
+          <div class="deal-style-subcard" style="padding:16px;">
+            <div style="font-family:var(--font-mono); font-size:10px; color:var(--accent-brand); font-weight:700; text-transform:uppercase;">VECTOR MATH</div>
+            <div style="font-family:var(--font-heading); font-size:15px; font-weight:700; color:var(--text-primary); margin:4px 0;">SVG Ring Gauge</div>
+            <div style="font-size:11px; color:var(--text-tertiary);">Stroke-Dashoffset Math</div>
+          </div>
+
+          <div class="deal-style-subcard" style="padding:16px;">
+            <div style="font-family:var(--font-mono); font-size:10px; color:var(--accent-cyan); font-weight:700; text-transform:uppercase;">DATABASE</div>
+            <div style="font-family:var(--font-heading); font-size:15px; font-weight:700; color:var(--text-primary); margin:4px 0;">JSON State Store</div>
+            <div style="font-size:11px; color:var(--text-tertiary);">InMemory Reactive Hydration</div>
+          </div>
+
+          <div class="deal-style-subcard" style="padding:16px;">
+            <div style="font-family:var(--font-mono); font-size:10px; color:var(--semantic-amber); font-weight:700; text-transform:uppercase;">TYPOGRAPHY</div>
+            <div style="font-family:var(--font-heading); font-size:15px; font-weight:700; color:var(--text-primary); margin:4px 0;">Google Fonts</div>
+            <div style="font-size:11px; color:var(--text-tertiary);">Plus Jakarta & JetBrains Mono</div>
+          </div>
+
+          <div class="deal-style-subcard" style="padding:16px;">
+            <div style="font-family:var(--font-mono); font-size:10px; color:var(--semantic-emerald); font-weight:700; text-transform:uppercase;">COMPLIANCE</div>
+            <div style="font-family:var(--font-heading); font-size:15px; font-weight:700; color:var(--text-primary); margin:4px 0;">WCAG AAA Ratios</div>
+            <div style="font-size:11px; color:var(--semantic-emerald);">19.4:1 Obsidian Contrast</div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- CLEAN, UNCLUBBED ISOLATED FOOTER CARD WITH DISCLAIMER ONLY (ZERO NAME REPETITIONS) -->
+    <footer class="footer-glass-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:12px; margin-bottom:14px;">
+        <span style="font-family:var(--font-mono); font-size:10.5px; color:var(--accent-brand); letter-spacing:0.06em; text-transform:uppercase;">PORTFOLIO DISCLAIMER & NOTICE</span>
+      </div>
+
+      <p style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-bottom:14px;">
+        This case study and interactive product architecture prototype is an independent design presentation created by <strong>Sohaib Ahmer</strong> (Postgraduate Alumnus, National Institute of Design). All product concepts, brand references, logos, and trademarks related to <strong>Oliv.AI</strong> remain the intellectual property of Oliv.AI.
+      </p>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; font-size:11.5px; color:var(--text-tertiary); border-top:1px solid var(--border-subtle); padding-top:12px;">
+        <div style="font-family:var(--font-heading); font-weight:600; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+          <span>Visual UI & Product Design Portfolio</span> &bull; 
+          <a href="mailto:sohaib@duck.com" style="color:var(--accent-cyan); text-decoration:none; transition:color 0.15s ease;">sohaib@duck.com</a> &bull;
+          <a href="https://www.linkedin.com/in/sohaibahmer/" target="_blank" rel="noopener noreferrer" style="color:var(--accent-cyan); text-decoration:none; display:inline-flex; align-items:center; gap:4px; transition:color 0.15s ease;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.78a1.64 1.64 0 1 0 0 3.28 1.64 1.64 0 0 0 0-3.28Z"/></svg>
+            <span>LinkedIn</span>
+          </a>
+        </div>
+        <div style="font-family:var(--font-mono);">
+          Designed for Oliv.AI &bull; © 2026 All Rights Reserved
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- WIDE 2-COLUMN CENTERED GLASS MODAL CARD -->
+  <div id="inspector-overlay" class="inspector-overlay" onclick="closeInspectorModal(event)">
+    <div id="inspector-card" class="inspector-center-card" onclick="event.stopPropagation()">
+      
+      <!-- Top Modal Header -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid var(--border-subtle); padding-bottom:12px;">
+        <div>
+          <span id="m-id" style="font-family:var(--font-mono); font-size:11px; color:var(--accent-brand);">DEAL-0000</span>
+          <h2 id="m-company" style="font-family:var(--font-heading); font-size:22px; font-weight:700; color:var(--text-primary); display:inline-block; margin-left:10px;">Company</h2>
+          <span id="m-title" style="font-size:12px; color:var(--text-secondary); margin-left:12px;">Deal Title</span>
+        </div>
+        <button style="background:transparent; border:none; color:var(--text-tertiary); font-size:20px; cursor:pointer;" onclick="closeInspectorDrawer()">✕</button>
+      </div>
+
+      <!-- 2-COLUMN SPLIT GRID -->
+      <div class="modal-split-grid">
+        
+        <!-- LEFT COLUMN: PROMINENT REVENUE & CIRCULAR MEDDICC PROGRESS GAUGE -->
+        <div class="modal-left-col">
+          
+          <!-- PROMINENT REVENUE IMPACT CARD -->
+          <div style="background:var(--bg-subcard); padding:16px 20px; border-radius:10px; border:1px solid var(--border-subtle);">
+            <span style="font-family:var(--font-mono); font-size:10px; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.05em;">PROPOSAL REVENUE IMPACT</span>
+            <div id="m-val" style="font-family:var(--font-mono); font-weight:700; font-size:28px; color:var(--text-primary); margin-top:2px;">$0</div>
+          </div>
+
+          <!-- MEDDICC PERCENTAGE CIRCULAR SVG PROGRESS GAUGE RING & MASTER SLIDER -->
+          <div style="background:var(--bg-subcard); padding:16px 20px; border-radius:10px; border:1px solid var(--border-subtle); display:flex; align-items:center; gap:20px;">
+            
+            <!-- SVG Circle Progress Ring Gauge -->
+            <div class="gauge-container">
+              <svg class="gauge-svg" viewBox="0 0 100 100">
+                <circle class="gauge-circle-bg" cx="50" cy="50" r="40"></circle>
+                <circle id="gauge-circle-fill" class="gauge-circle-fill" cx="50" cy="50" r="40"></circle>
+              </svg>
+              <span id="gauge-val-text" class="gauge-val-text">0%</span>
+            </div>
+
+            <!-- Master Score Adjuster Slider -->
+            <div style="flex:1;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                <span style="font-size:11.5px; font-weight:600; color:var(--text-primary);">Overall MEDDICC Score Gauge</span>
+                <span style="font-family:var(--font-mono); font-size:10px; color:var(--semantic-emerald);" id="m-score">0%</span>
+              </div>
+              <p style="font-size:10.5px; color:var(--text-tertiary); margin-bottom:8px; line-height:1.3;">
+                Drag master slider to adjust total deal health directly:
+              </p>
+              <input type="range" id="master-score-slider" class="custom-range-slider" min="0" max="100" value="0" oninput="onMasterScoreSlide(this.value)">
+            </div>
+
+          </div>
+
+          <!-- Automated Call Digest -->
+          <div>
+            <div style="font-family:var(--font-mono); font-size:10px; color:var(--text-tertiary); margin-bottom:4px;">AUTOMATED AI CALL DIGEST</div>
+            <div id="m-transcript" style="font-size:12px; color:var(--text-secondary); background:var(--bg-quote); padding:12px 14px; border-radius:6px; border-left:2px solid var(--accent-brand); font-style:italic; line-height:1.45;">
+              "Transcript..."
+            </div>
+          </div>
+
+          <!-- AI Risk Radar Signal -->
+          <div>
+            <div style="font-family:var(--font-mono); font-size:10px; color:var(--semantic-amber); margin-bottom:4px;">AI RISK RADAR SIGNAL</div>
+            <div id="m-advice" style="font-size:12px; color:var(--text-primary); background:rgba(255, 214, 10, 0.08); padding:12px 14px; border-radius:6px; border:1px solid rgba(255, 214, 10, 0.2); line-height:1.45;">
+              Advice...
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: INTERACTIVE MEDDICC SLIDERS & AI TRUST SOURCE CITATIONS -->
+        <div class="modal-right-col">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <span style="font-size:12.5px; font-weight:600; color:var(--text-primary);">MEDDICC Breakdown Sliders</span>
+            <span style="font-family:var(--font-mono); font-size:9.5px; color:var(--accent-cyan);">⚡ Live Recalculation</span>
+          </div>
+          <p style="font-size:11px; color:var(--text-tertiary); margin-bottom:10px; line-height:1.35;">
+            Adjust individual parameters. Lowering <strong>Buyer ($E$)</strong> under $50\%$ flags risk in table.
+          </p>
+
+          <div id="sliders-container">
+            <!-- Rendered dynamically by app.js -->
+          </div>
+
+          <!-- AI TRUST SOURCE ATTRIBUTION CITATION CALLOUT -->
+          <div id="ai-citation-box" class="ai-citation-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <span style="font-family:var(--font-mono); font-size:10px; color:var(--accent-cyan); text-transform:uppercase; font-weight:600;">🤖 AI Source Attribution</span>
+              <span id="ai-confidence-badge" style="font-family:var(--font-mono); font-size:9.5px; background:rgba(48,209,88,0.15); color:var(--semantic-emerald); padding:2px 6px; border-radius:4px;">98.4% Confidence</span>
+            </div>
+            <p id="ai-citation-text" style="font-size:11px; color:var(--text-secondary); font-style:italic; line-height:1.4;">
+              Hover or adjust sliders above to view exact meeting transcript citations extracted by Oliv AI.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Add New Deal Modal -->
+  <div id="new-deal-modal" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:var(--overlay-bg); backdrop-filter:blur(12px); z-index:300; display:none; align-items:center; justify-content:center;">
+    <div style="width:440px; max-width:90vw; background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:var(--radius-md); padding:28px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h3 style="font-family:var(--font-heading); font-size:18px; font-weight:700;">Add Custom Deal</h3>
+        <button style="background:transparent; border:none; color:var(--text-tertiary); font-size:18px; cursor:pointer;" onclick="closeNewDealModal()">✕</button>
+      </div>
+
+      <form id="new-deal-form">
+        <div style="margin-bottom:12px;">
+          <label style="display:block; font-size:11px; font-family:var(--font-mono); color:var(--text-tertiary); margin-bottom:4px;">COMPANY NAME</label>
+          <input type="text" id="nd-company" required placeholder="e.g. Figma Systems" style="width:100%; background:var(--bg-canvas); border:1px solid var(--border-subtle); border-radius:6px; padding:8px 12px; color:var(--text-primary); outline:none;">
+        </div>
+        <div style="margin-bottom:12px;">
+          <label style="display:block; font-size:11px; font-family:var(--font-mono); color:var(--text-tertiary); margin-bottom:4px;">DEAL TITLE</label>
+          <input type="text" id="nd-title" required placeholder="e.g. RevOps Enterprise License" style="width:100%; background:var(--bg-canvas); border:1px solid var(--border-subtle); border-radius:6px; padding:8px 12px; color:var(--text-primary); outline:none;">
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <label style="display:block; font-size:11px; font-family:var(--font-mono); color:var(--text-tertiary); margin-bottom:4px;">DEAL VALUE ($ - NUMERIC ONLY)</label>
+          <input type="text" id="nd-val" required placeholder="350000" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" style="width:100%; background:var(--bg-canvas); border:1px solid var(--border-subtle); border-radius:6px; padding:8px 12px; color:var(--text-primary); outline:none;">
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <label style="display:block; font-size:11px; font-family:var(--font-mono); color:var(--text-tertiary); margin-bottom:4px;">ACCOUNT OWNER</label>
+          <input type="text" id="nd-owner" required value="Sohaib Ahmer" style="width:100%; background:var(--bg-canvas); border:1px solid var(--border-subtle); border-radius:6px; padding:8px 12px; color:var(--text-primary); outline:none;">
+        </div>
+        <button type="submit" class="btn-minimal-primary" style="width:100%; padding:10px; font-size:13px;">Save Deal</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
