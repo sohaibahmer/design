@@ -1,0 +1,9 @@
+# Railway Nixpacks Configuration for YouTube Downloader Backend
+[phases.setup]
+nixPkgs = ['nodejs_20', 'python311', 'yt-dlp', 'ffmpeg']
+
+[phases.build]
+cmds = ['npm install']
+
+[start]
+cmd = 'node server.js'

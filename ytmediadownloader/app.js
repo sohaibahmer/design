@@ -1,10 +1,12 @@
 /* ==========================================================================
    PROJECT 03 • YOUTUBE MEDIA DOWNLOADER & STREAM PARSER ENGINE
    Designer: Sohaib Ahmer
-   Features: Direct Stream Download Engine (Zero Redirects, Zero New Tabs)
+   Features: Direct Real YouTube Stream Extraction via Local Node.js / yt-dlp Backend
    ========================================================================== */
 
-const BACKEND_API = 'http://localhost:4000';
+const BACKEND_API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+  ? 'http://localhost:4000' 
+  : 'https://design-production-623e.up.railway.app';
 
 document.addEventListener('DOMContentLoaded', () => {
   initYouTubeDownloaderEngine();
@@ -104,7 +106,7 @@ function initYouTubeDownloaderEngine() {
     if (e.key === 'Enter') parseYouTubeLink();
   });
 
-  // 2. PARSE YOUTUBE METADATA FOR ANY LINK (NO HARDCODED SAMPLES)
+  // 2. PARSE REAL YOUTUBE METADATA & AVAILABLE FORMATS VIA BACKEND / YT-DLP
   async function parseYouTubeLink() {
     const rawUrl = urlInput.value.trim();
     if (!rawUrl) return;
@@ -123,76 +125,21 @@ function initYouTubeDownloaderEngine() {
     parsingLoader.classList.add('active');
 
     try {
-      // 1. Try local backend server API first
-      let videoData = null;
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 1200);
-        const res = await fetch(`${BACKEND_API}/api/info?url=${encodeURIComponent(rawUrl)}`, { signal: controller.signal });
-        clearTimeout(timeoutId);
-        if (res.ok) {
-          videoData = await res.json();
-          videoData.isBackend = true;
-        }
-      } catch (e) {}
-
-      // 2. If backend not active, use YouTube oEmbed API for exact title & thumbnail
-      if (!videoData) {
-        const oembedRes = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(rawUrl)}`);
-        if (oembedRes.ok) {
-          const json = await oembedRes.json();
-          if (json.title) {
-            videoData = {
-              id: videoId,
-              title: json.title,
-              channel: `📺 ${json.author_name || 'YouTube Channel'}`,
-              views: `👁️ YouTube Stream Extracted`,
-              duration: '04:15',
-              thumb: json.thumbnail_url || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
-              rawUrl: rawUrl,
-              videoFormats: [
-                { quality: '2160p 60fps Ultra HD', ext: '.mp4', size: '185.4 MB', fps: '60 FPS', format_id: '401' },
-                { quality: '1080p 60fps Full HD', ext: '.mp4', size: '48.2 MB', fps: '60 FPS', format_id: '137' },
-                { quality: '720p HD', ext: '.mp4', size: '24.8 MB', fps: '30 FPS', format_id: '22' },
-                { quality: '480p SD', ext: '.mp4', size: '12.1 MB', fps: '30 FPS', format_id: '18' }
-              ],
-              audioFormats: [
-                { quality: '320 kbps Master Audio', ext: '.mp3', size: '8.4 MB', fps: '44.1 kHz', format_id: '140' },
-                { quality: '192 kbps High Quality', ext: '.mp3', size: '5.1 MB', fps: '44.1 kHz', format_id: '251' },
-                { quality: '128 kbps Standard', ext: '.mp3', size: '3.2 MB', fps: '44.1 kHz', format_id: '250' }
-              ]
-            };
-          }
-        }
+      const response = await fetch(`${BACKEND_API}/api/info?url=${encodeURIComponent(rawUrl)}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch YouTube metadata from backend server');
       }
 
-      if (!videoData) {
-        videoData = {
-          id: videoId,
-          title: `YouTube Video Stream (${videoId})`,
-          channel: '📺 YouTube Channel',
-          views: '👁️ Stream Extracted',
-          duration: '03:45',
-          thumb: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
-          rawUrl: rawUrl,
-          videoFormats: [
-            { quality: '1080p Full HD', ext: '.mp4', size: '48.2 MB', fps: '60 FPS', format_id: '137' },
-            { quality: '720p HD', ext: '.mp4', size: '24.8 MB', fps: '30 FPS', format_id: '22' }
-          ],
-          audioFormats: [
-            { quality: '320 kbps High Quality Audio', ext: '.mp3', size: '8.4 MB', fps: '44.1 kHz', format_id: '140' }
-          ]
-        };
-      }
+      const data = await response.json();
+      currentParsedData = data;
+      currentParsedData.rawUrl = rawUrl;
 
-      currentParsedData = videoData;
-
-      // Update UI with exact video metadata
-      videoThumb.src = videoData.thumb;
-      videoTitle.textContent = videoData.title;
-      channelName.textContent = videoData.channel;
-      viewsCount.textContent = videoData.views;
-      videoDuration.textContent = videoData.duration;
+      // Render extracted video metadata
+      videoThumb.src = data.thumb;
+      videoTitle.textContent = data.title;
+      channelName.textContent = data.channel;
+      viewsCount.textContent = data.views;
+      videoDuration.textContent = data.duration;
 
       // Hide loader & reveal result card
       parsingLoader.classList.remove('active');
@@ -200,8 +147,9 @@ function initYouTubeDownloaderEngine() {
       renderAllAvailableFormats();
 
     } catch (err) {
-      console.warn('Metadata parsing error:', err);
+      console.error('Backend metadata parsing error:', err);
       parsingLoader.classList.remove('active');
+      alert('Could not connect to backend server at http://localhost:4000. Please ensure node server.js is running!');
     } finally {
       btnParse.textContent = 'Go';
       btnParse.style.opacity = '1';
@@ -273,75 +221,27 @@ function initYouTubeDownloaderEngine() {
     }
   }
 
-  // 4. DIRECT DOWNLOAD ENGINE (IN SAME TAB, ZERO NEW TABS/WINDOWS/REDIRECTS)
+  // 4. REAL-TIME CHUNKED STREAM DOWNLOAD ENGINE (DOWNLOADS EXACT YOUTUBE STREAM VIA BACKEND)
   btnDownload.addEventListener('click', async () => {
-    const rawUrl = urlInput.value.trim();
+    const rawUrl = currentParsedData ? currentParsedData.rawUrl || urlInput.value.trim() : urlInput.value.trim();
     if (!rawUrl || !selectedFormat || !currentParsedData) return;
 
     btnDownload.disabled = true;
     btnDownload.style.opacity = '0.6';
     progressBox.classList.add('active');
     progressFill.style.width = '0%';
-    progressStatus.textContent = `Downloading ${selectedFormat.ext.toUpperCase()} stream for "${currentParsedData.title.substring(0, 32)}..."`;
+    progressStatus.textContent = `Connecting to YouTube stream server...`;
     progressSpeed.textContent = 'Connecting...';
 
-    // A) If connected to local node backend server
-    if (currentParsedData.isBackend) {
-      const formatIdParam = selectedFormat && selectedFormat.format_id ? `&format_id=${encodeURIComponent(selectedFormat.format_id)}` : '';
-      const downloadApiUrl = `${BACKEND_API}/api/download?url=${encodeURIComponent(rawUrl)}&type=${currentTab}${formatIdParam}`;
-
-      try {
-        const response = await fetch(downloadApiUrl);
-        if (!response.ok) throw new Error('Stream download failed');
-
-        const contentLength = response.headers.get('content-length');
-        const totalBytes = contentLength ? parseInt(contentLength, 10) : (selectedFormat.filesize || 20 * 1024 * 1024);
-
-        const reader = response.body.getReader();
-        const chunks = [];
-        let receivedBytes = 0;
-        let startTime = Date.now();
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-
-          chunks.push(value);
-          receivedBytes += value.length;
-
-          const elapsedTime = (Date.now() - startTime) / 1000;
-          const currentSpeedMB = elapsedTime > 0 ? (receivedBytes / (1024 * 1024) / elapsedTime).toFixed(1) : '24.5';
-          let percent = Math.min(100, Math.round((receivedBytes / (totalBytes || 1)) * 100));
-
-          progressFill.style.width = `${percent}%`;
-          progressStatus.textContent = `Downloading ${selectedFormat.ext.toUpperCase()} stream... ${(receivedBytes / (1024 * 1024)).toFixed(1)} MB / ${(totalBytes / (1024 * 1024)).toFixed(1)} MB (${percent}%)`;
-          progressSpeed.textContent = `${currentSpeedMB} MB/s`;
-        }
-
-        saveDirectBlobFile(chunks, selectedFormat.ext);
-        return;
-      } catch (err) {
-        console.warn('Backend stream error:', err);
-      }
-    }
-
-    // B) Direct Client Stream Fetcher (In SAME TAB, ZERO New Tabs or Redirects)
-    await executeSameTabDirectStreamDownload();
-  });
-
-  async function executeSameTabDirectStreamDownload() {
-    const ext = selectedFormat ? selectedFormat.ext : '.mp4';
-    const isAudio = ext === '.mp3';
-    
-    // Fetch high-speed media stream directly into memory in the SAME TAB
-    const mediaStreamUrl = isAudio 
-      ? 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3'
-      : 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4';
+    const formatIdParam = selectedFormat && selectedFormat.format_id ? `&format_id=${encodeURIComponent(selectedFormat.format_id)}` : '';
+    const downloadApiUrl = `${BACKEND_API}/api/download?url=${encodeURIComponent(rawUrl)}&type=${currentTab}${formatIdParam}`;
 
     try {
-      const response = await fetch(mediaStreamUrl);
+      const response = await fetch(downloadApiUrl);
+      if (!response.ok) throw new Error('Stream download failed');
+
       const contentLength = response.headers.get('content-length');
-      const totalBytes = contentLength ? parseInt(contentLength, 10) : 2500000;
+      const totalBytes = contentLength ? parseInt(contentLength, 10) : (selectedFormat.filesize || 25 * 1024 * 1024);
 
       const reader = response.body.getReader();
       const chunks = [];
@@ -357,22 +257,23 @@ function initYouTubeDownloaderEngine() {
 
         const elapsedTime = (Date.now() - startTime) / 1000;
         const currentSpeedMB = elapsedTime > 0 ? (receivedBytes / (1024 * 1024) / elapsedTime).toFixed(1) : '18.4';
-        let percent = Math.min(100, Math.round((receivedBytes / totalBytes) * 100));
+        let percent = Math.min(100, Math.round((receivedBytes / (totalBytes || 1)) * 100));
 
         progressFill.style.width = `${percent}%`;
-        progressStatus.textContent = `Downloading ${ext.toUpperCase()} stream... (${percent}%)`;
+        progressStatus.textContent = `Downloading ${selectedFormat.ext.toUpperCase()} stream... ${(receivedBytes / (1024 * 1024)).toFixed(1)} MB / ${(totalBytes ? (totalBytes / (1024 * 1024)).toFixed(1) : '?')} MB (${percent}%)`;
         progressSpeed.textContent = `${currentSpeedMB} MB/s`;
       }
 
-      saveDirectBlobFile(chunks, ext);
-
+      finishDownload(chunks, selectedFormat.ext);
     } catch (err) {
-      console.warn('Direct stream fetch failed:', err);
-      saveDirectBlobFile([], ext);
+      console.error('Download stream error:', err);
+      progressStatus.textContent = 'Download failed. Please check backend server.';
+      btnDownload.disabled = false;
+      btnDownload.style.opacity = '1';
     }
-  }
+  });
 
-  function saveDirectBlobFile(chunks, ext) {
+  function finishDownload(chunks, ext) {
     progressFill.style.width = '100%';
     progressStatus.textContent = `Download Complete! Saving file to Downloads...`;
     progressSpeed.textContent = 'Complete';
@@ -384,7 +285,6 @@ function initYouTubeDownloaderEngine() {
     const cleanTitle = currentParsedData ? currentParsedData.title.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 40) : 'YouTube_Media';
     const filename = `${cleanTitle}_[${currentParsedData ? currentParsedData.id : 'video'}]${ext}`;
 
-    // Direct browser file save trigger in SAME TAB
     const link = document.createElement('a');
     link.href = blobUrl;
     link.download = filename;

@@ -1,14 +1,14 @@
 {
-  "name": "visual_ui_portfolio_3",
+  "name": "youtube-downloader-backend",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Sohaib Ahmer",
   "license": "ISC",
-  "description": "",
+  "description": "YouTube Stream Downloader Backend Server",
   "dependencies": {
     "@distube/ytdl-core": "^4.16.12",
     "axios": "^1.19.0",

@@ -1,19 +1,25 @@
 /* ==========================================================================
-   REAL YOUTUBE STREAMING BACKEND SERVER (REAL-TIME PROGRESS STREAMING)
+   REAL YOUTUBE STREAMING BACKEND SERVER (PRODUCTION-READY FOR RENDER/RAILWAY)
    Project: Project 03 YouTube Media Downloader
-   Tech: Node.js, Express, yt-dlp 2026 Direct Pipe with Content-Length
+   Tech: Node.js, Express, yt-dlp Direct Pipe with Content-Length
    ========================================================================== */
 
 const express = require('express');
 const cors = require('cors');
 const { exec, spawn } = require('child_process');
+const path = require('path');
+const fs = require('fs');
 
 const app = express();
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
+
+// Resolve yt-dlp binary path dynamically
+const YTDLP_BIN = fs.existsSync('/opt/homebrew/bin/yt-dlp') ? '/opt/homebrew/bin/yt-dlp' : 'yt-dlp';
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, '..')));
 
 // 1. EXTRACT ALL REAL YOUTUBE FORMATS VIA YT-DLP
 app.get('/api/info', (req, res) => {
@@ -22,7 +28,7 @@ app.get('/api/info', (req, res) => {
     return res.status(400).json({ error: 'Missing video URL' });
   }
 
-  const cmd = `/opt/homebrew/bin/yt-dlp --dump-json "${videoUrl}"`;
+  const cmd = `"${YTDLP_BIN}" --dump-json "${videoUrl}"`;
   exec(cmd, { maxBuffer: 15 * 1024 * 1024 }, (error, stdout, stderr) => {
     if (error || !stdout) {
       console.error('yt-dlp info error:', error || stderr);
@@ -121,7 +127,7 @@ app.get('/api/download', (req, res) => {
   console.log(`Direct chunked stream download: format ${formatArg} for ${videoUrl}`);
 
   // Spawn yt-dlp to stream stdout chunks directly to client HTTP response!
-  const ytProcess = spawn('/opt/homebrew/bin/yt-dlp', [
+  const ytProcess = spawn(YTDLP_BIN, [
     '-f', formatArg,
     '--no-playlist',
     '-o', '-',
@@ -146,6 +152,6 @@ app.get('/api/download', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`✅ Real YouTube Downloader Server (Real-Time UI Progress Engine) running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`✅ Real YouTube Downloader Server running on port ${PORT}`);
 });
