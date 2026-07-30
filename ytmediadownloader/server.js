@@ -11,7 +11,7 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 8080;
 
 // Resolve yt-dlp binary path dynamically for Linux Docker container & macOS
 const YTDLP_BIN = fs.existsSync('/usr/local/bin/yt-dlp') 
@@ -21,7 +21,15 @@ const YTDLP_BIN = fs.existsSync('/usr/local/bin/yt-dlp')
 app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
-app.use(express.static(path.join(__dirname, '..')));
+
+// Health check endpoint for Railway / cloud orchestrators
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', time: new Date() });
+});
+
+app.get('/', (req, res) => {
+  res.send('YouTube Downloader Backend API Online');
+});
 
 // 1. EXTRACT ALL REAL YOUTUBE FORMATS VIA YT-DLP
 app.get('/api/info', (req, res) => {
