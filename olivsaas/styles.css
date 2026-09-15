@@ -538,12 +538,12 @@ body {
 .dot-discovery { background: var(--semantic-amber); box-shadow: 0 0 8px var(--semantic-amber); }
 .dot-closed { background: var(--semantic-emerald); box-shadow: 0 0 8px var(--semantic-emerald); }
 
-/* EXECUTIVE CASE STUDY BANNER */
+/* EXECUTIVE CASE STUDY EDITORIAL SECTION */
 .case-story-card {
-  background: var(--bg-card);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 32px;
+  padding: 32px 36px;
   margin-top: 36px;
   position: relative;
   overflow: hidden;
@@ -559,26 +559,82 @@ body {
 
 .story-grid-balanced {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
   margin-top: 24px;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 24px;
+}
+
+@media (max-width: 900px) {
+  .story-grid-balanced {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .story-grid-balanced {
+    grid-template-columns: 1fr;
+  }
 }
 
 .deal-style-subcard {
-  background: var(--bg-subcard);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 22px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  transition: all 0.25s ease;
+  justify-content: flex-start;
+  transition: transform 0.2s ease;
 }
 
 .deal-style-subcard:hover {
-  background: var(--bg-subcard-hover);
-  border-color: var(--border-medium);
-  box-shadow: 0 6px 20px var(--accent-brand-glow);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  transform: translateY(-2px);
+}
+
+.story-step-num {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent-brand), var(--accent-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.story-step-title {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  line-height: 1.35;
+}
+
+.story-step-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.story-step-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--semantic-emerald);
+  background: rgba(48, 209, 88, 0.1);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(48, 209, 88, 0.2);
 }
 
 /* MODAL DRAWER CENTERED CARD */
