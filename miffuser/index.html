@@ -123,62 +123,28 @@
     <!-- SECTION 01.5: USER RESEARCH & WIREFRAMES -->
     <section class="case-section">
       <div class="section-num">01.5 &bull; USER RESEARCH & WIREFRAME EXPLORATIONS</div>
-      <h2 class="section-heading">From User Context to Wireframe Specs</h2>
+      <h2 class="section-heading">From User Context to Structural Wireframes</h2>
       <p class="section-desc">
-        Field research with MIFF festival attendees revealed critical friction points during physical venue navigation:
+        Field research with festival attendees revealed critical friction points during physical venue navigation:
       </p>
 
-      <div class="features-grid-2col" style="margin-bottom: 24px;">
+      <div class="features-grid-2col">
         <div class="feature-card">
           <div class="card-tag">RESEARCH INSIGHT #1</div>
-          <h3>The Queue Friction</h3>
-          <p>Attendees standing in auditorium queues need zero-latency access to screening schedules without waiting for cellular networks to load heavy images or PDF catalogues.</p>
+          <h3>Auditorium Queue Friction</h3>
+          <p>Attendees in physical venue queues require instant offline access to screening schedules without relying on spotty venue Wi-Fi or loading heavy 50MB PDFs.</p>
         </div>
 
         <div class="feature-card">
           <div class="card-tag">RESEARCH INSIGHT #2</div>
-          <h3>Slot-Based Decision Fatigue</h3>
-          <p>Short films are shown in package slots (e.g. 2:00 PM slot). Attendees needed exact offset calculation (e.g. Film C starts at 2:18 PM) to avoid missing specific screenings.</p>
+          <h3>Slot-Based Package Timing</h3>
+          <p>Short film packages required exact offset start calculation (e.g. Film C in a 2:00 PM block starting at 2:18 PM) to prevent attendees missing specific entries.</p>
         </div>
       </div>
 
-      <!-- WIREFRAME LAYOUT SPECIFICATIONS -->
-      <div class="callout-box accent-gold" style="margin-bottom: 24px;">
+      <div class="callout-box accent-gold" style="margin-top:20px;">
         <div class="callout-title">Wireframe & Structural Layout Evolution</div>
-        <p><strong>Phase 1 Wireframe (Multi-page tabbed navigation):</strong> Rejected due to view switching overhead and state loss during back-button navigation.</p>
-        <p><strong>Phase 2 Wireframe (Single-Screen Scroll + Sticky Day Bar + Bottom-Sheet Modal):</strong> Adopted. Keeps 100% of festival schedule in a single scrollable DOM with modal layers that double as native back-button targets.</p>
-      </div>
-
-      <!-- VISUAL WIREFRAME ARCHITECTURE SPECIMEN -->
-      <div style="background: rgba(18, 24, 41, 0.7); border: 1px dashed #f0c040; border-radius: 12px; padding: 24px; font-family: monospace;">
-        <div style="font-size: 11px; color: #f0c040; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; font-weight: 700;">
-          📐 LOW-FIDELITY WIREFRAME & COMPONENT LAYOUT SCHEMATIC
-        </div>
-        
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-          <div style="border: 1px dashed rgba(240, 192, 64, 0.4); border-radius: 8px; padding: 14px; background: rgba(0,0,0,0.3);">
-            <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px;">Header & Control Bar Wireframe</div>
-            <div style="font-size: 11px; color: #8a99ad; line-height: 1.5;">
-              [ SA Brand Stamp ] &bull; [ Live App Btn ] &bull; [ Exit Btn ]<br>
-              ---------------------------------------------<br>
-              [ Festival Day Tabs: Day 1 | Day 2 | Live Now ]<br>
-              ---------------------------------------------<br>
-              [ 🔍 Full-Text Search ] [ ⚙️ 10-Dim Filters (0) ]
-            </div>
-          </div>
-
-          <div style="border: 1px dashed rgba(240, 192, 64, 0.4); border-radius: 8px; padding: 14px; background: rgba(0,0,0,0.3);">
-            <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px;">Film Card & Modal Wireframe</div>
-            <div style="font-size: 11px; color: #8a99ad; line-height: 1.5;">
-              [ Time Slot Header: 14:00 PM ]<br>
-              ┌─────────────────────────────────────────┐<br>
-              │ Film Title &bull; Venue &bull; Duration &bull; Offset │<br>
-              │ [ Section Badge ] [ Save Slot Btn ]     │<br>
-              └─────────────────────────────────────────┘<br>
-              Tap &rarr; Bottom Sheet Modal (Image + Notes)
-            </div>
-          </div>
-        </div>
+        <p>Tested multi-screen tabbed navigation vs. a single-screen scroll with sticky day tabs and bottom-sheet film modals. The single-page architecture was chosen to provide zero-latency filtering and native back-button modal dismissal.</p>
       </div>
     </section>
 
